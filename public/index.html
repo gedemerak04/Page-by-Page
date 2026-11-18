@@ -290,7 +290,8 @@ var COVERS=["#3D5A98","#7B4B94","#C27C00","#3A7D44","#B83E5A","#4A5A6A"];
 var KEY="pagebypage.v1";
 var CKEY="pagebypage.catalog.v1",TKEY="pagebypage.teacher";
 var TEACHER=false;
-try{var qs=location.search||"";if(/[?&]teacher=off\b/.test(qs))localStorage.removeItem(TKEY);else if(/[?&]teacher(=|&|$)/.test(qs))localStorage.setItem(TKEY,"1");TEACHER=localStorage.getItem(TKEY)==="1";}catch(e){}
+try{localStorage.removeItem(TKEY);}catch(e){}
+try{var qs=location.search||"";TEACHER=/[?&]teacher(=|&|$)/.test(qs)&&!/[?&]teacher=off\b/.test(qs);}catch(e){}
 var classStories=[],classHW=[];
 
 var state=loadLocal();
@@ -513,15 +514,12 @@ function viewLibrary(){
       :'<div class="empty"><h3>No lessons yet</h3><p>Load the starter lessons, or add your own from photos.</p><div class="row"><button class="btn primary" data-act="load-starter">Load starter lessons</button><button class="btn ghost" data-act="new">Add lessons from photos</button></div></div>';
   }else{
     var note='<div class="empty"><h3>No stories yet</h3><p>Your teacher hasn\u2019t released any stories yet. Check back soon!</p></div>';
-    if(cls.length&&mine.length)body='<h3 class="shelf-h">Class lessons</h3>'+shelf(cls,per)+'<h3 class="shelf-h">My stories</h3>'+shelf(mine,per);
-    else if(cls.length)body=shelf(cls,per);
-    else if(mine.length)body=note+'<h3 class="shelf-h">My stories</h3>'+shelf(mine,per);
-    else body=note;
+    body=cls.length?shelf(cls,per):note;
   }
   return '<header class="bar"><div class="left"><span class="brand">Page by Page'+(TEACHER?' <small class="tbadge">Teacher mode</small>':'')+'</span></div><div></div><div class="right">'
     +'<button class="btn ghost" data-act="progress">\uD83D\uDCC8 Progress</button>'
     +'<button class="btn ghost" data-act="open-drawer">\u2665 Heart words ('+hwWords().length+')</button>'
-    +'<button class="btn primary" data-act="new">'+(TEACHER?"+ Add lessons from photos":"+ New story from a photo")+'</button></div></header>'
+    +(TEACHER?'<button class="btn primary" data-act="new">+ Add lessons from photos</button>':"")+'</div></header>'
     +'<main class="lib"><h2>'+h2+'</h2><p class="sub">'+sub+'</p>'+(TEACHER?teacherBar():"")+body+'</main>';
 }
 
@@ -547,7 +545,7 @@ function viewReader(){
   }else{
     body='<div class="sentence"><div class="sentence-inner '+ui.dir+'" id="sent">'+renderSentence(s.pages[ui.page]||"",s,ui.page)+'</div></div>';
   }
-  return '<header class="bar"><div class="left"><button class="btn ghost" data-act="home">\u2190 My stories</button></div>'
+  return '<header class="bar"><div class="left"><button class="btn ghost" data-act="home">\u2190 Stories</button></div>'
     +'<h1>'+esc(s.title)+'</h1>'
     +'<div class="right">'+(TEACHER?'<button class="btn ghost" data-act="toggle-edit" aria-pressed="'+ui.edit+'">Mark heart words</button>':"")
     +'<button class="btn ghost" data-act="progress">\uD83D\uDCC8 Progress</button>'
@@ -633,7 +631,7 @@ function statCard(n,label){return '<div class="stat"><b>'+n+'</b><span>'+label+'
 function viewProgress(){
   var per=storyStats(),wk=buckets("week"),cw=wk[wk.length-1],si=streakInfo();
   var totalFin=0;state.log.forEach(function(e){if(e.k==="f")totalFin++;});
-  var head='<header class="bar"><div class="left"><button class="btn ghost" data-act="home">\u2190 My stories</button></div><h1>Progress</h1><div></div></header>';
+  var head='<header class="bar"><div class="left"><button class="btn ghost" data-act="home">\u2190 Stories</button></div><h1>Progress</h1><div></div></header>';
   var stats='<div class="stats">'
     +statCard(cw.pages,cw.pages===1?"page finished this week":"pages finished this week")
     +statCard(cw.fin,cw.fin===1?"story finished this week":"stories finished this week")
@@ -766,18 +764,20 @@ function renderDrawer(){
     return '<button class="hwt st-'+st.k+(sel[n]?" sel":"")+'" data-act="hw-sel" data-w="'+esc(x.w)+'" aria-pressed="'+(sel[n]?"true":"false")+'" title="'+esc(st.t)+'">'+esc(x.w)+tag+'</button>';
   }).join("");
   var mode=ui.hwMode||"off",dis=nsel?"":" disabled";
-  var bar=ui.hwDelAsk
+  var bar=!ui.hwSelMode
+    ?'<div class="selbar"><div class="ctl"><button class="btn primary" data-act="hw-show-all">Show all</button><button class="btn line" data-act="hw-hide-all">Hide all</button><button class="btn line" data-act="hw-mode-sel">Select words to schedule or delete\u2026</button></div></div>'
+    :ui.hwDelAsk
     ?'<div class="selbar"><div><b>Delete '+nsel+(nsel===1?" word":" words")+'?</b></div><div class="ctl"><button class="btn danger" data-act="hw-del-yes">Delete</button><button class="btn line" data-act="hw-del-no">Keep</button></div></div>'
-    :'<div class="selbar"><div><b>'+nsel+' selected</b> \u2022 <button class="link" data-act="hw-all">All</button> <button class="link" data-act="hw-sel-off">Hidden ones</button> <button class="link" data-act="hw-none">None</button></div>'
+    :'<div class="selbar"><div><button class="link" data-act="hw-mode-sel">\u2190 Back</button> \u2022 <b>'+nsel+' selected</b> \u2022 <button class="link" data-act="hw-all">All</button> <button class="link" data-act="hw-sel-off">Hidden ones</button> <button class="link" data-act="hw-none">None</button></div>'
       +'<div class="ctl"><button class="btn primary" data-act="hw-show"'+dis+'>Show to students</button><button class="btn line" data-act="hw-hide"'+dis+'>Hide</button>'
       +'<button class="btn danger" data-act="hw-del-ask"'+dis+'>Delete</button></div>'
       +'<div class="schedset"><input type="date" class="field" id="hw-sdate" aria-label="Release date" value="'+esc(ui.hwSDate||"")+'"><button class="btn line" data-act="hw-sched"'+dis+'>Release on this date</button></div></div>';
   $drawer.innerHTML=head
-    +'<p class="hint">You choose which heart words students can see. Add words, tap words to select them, then show, hide or schedule them. Students only see the words you show.</p>'
+    +'<p class="hint">You choose which heart words students can see. Tap a word to show or hide it for students right away. Students only see words that are shown.</p>'
     +'<div class="add-row"><input class="field" id="hw-input" placeholder="Add words (spaces or commas)" autocomplete="off" autocapitalize="off" spellcheck="false"><button class="btn primary" data-act="add-heart">Add</button></div>'
     +'<div class="add-row hwmode"><select class="field" id="hw-mode" aria-label="New words start as"><option value="off"'+(mode==="off"?" selected":"")+'>New words start hidden</option><option value="on"'+(mode==="on"?" selected":"")+'>New words start visible</option><option value="sched"'+(mode==="sched"?" selected":"")+'>New words release on a date</option></select>'
     +'<input type="date" class="field" id="hw-date" aria-label="Release date for new words" value="'+esc(ui.hwDate||"")+'"'+(mode==="sched"?"":" disabled")+'></div>'
-    +'<div class="hint">'+on+' visible \u2022 '+sc+' scheduled \u2022 '+off+' hidden. Solid = visible, dashed = hidden, dotted = scheduled.</div>'
+    +'<div class="hint">'+on+' visible \u2022 '+sc+' scheduled \u2022 '+off+' hidden. Solid = shown, dashed = hidden, dotted = scheduled.</div>'
     +'<div class="words">'+(chips||'<span class="hint">No heart words yet.</span>')+'</div>'
     +bar+'</aside>';
 }
@@ -1248,7 +1248,7 @@ function viewSignin(){
 }
 
 /* ---------- class catalog (lessons.json) + teacher mode ---------- */
-function allStories(){return state.stories.concat(classStories);}
+function allStories(){return TEACHER?state.stories:classStories;}
 function dueDate(x){var m=/^(\d{4})-(\d{2})-(\d{2})$/.exec(String(x||"").trim());return m?new Date(+m[1],+m[2]-1,+m[3]).getTime():null;}
 function relStatus(s){
   if(s.released===true)return {k:"on",t:"Visible to students"};
@@ -1431,7 +1431,12 @@ document.addEventListener("click",function(e){
     case "close-drawer":ui.drawer=false;renderDrawer();break;
     case "add-heart":hwAddFromForm();break;
     case "say-hw":sayWord(el.getAttribute("data-w"));break;
-    case "hw-sel":var hk=norm(el.getAttribute("data-w"));ui.hwSel=ui.hwSel||{};if(ui.hwSel[hk])delete ui.hwSel[hk];else ui.hwSel[hk]=1;ui.hwDelAsk=false;renderDrawer();break;
+    case "hw-sel":var hk=norm(el.getAttribute("data-w"));
+      if(!ui.hwSelMode){var hi=hwIndex(hk);if(hi>=0){var hx=state.hw[hi],on1=relStatus(hx).k==="on";hx.released=!on1;hx.releaseOn="";persist();renderDrawer();refreshAfterWords();toast(hx.w+(on1?" hidden from students":" shown to students"));}break;}
+      ui.hwSel=ui.hwSel||{};if(ui.hwSel[hk])delete ui.hwSel[hk];else ui.hwSel[hk]=1;ui.hwDelAsk=false;renderDrawer();break;
+    case "hw-mode-sel":ui.hwSelMode=!ui.hwSelMode;ui.hwSel={};ui.hwDelAsk=false;renderDrawer();break;
+    case "hw-show-all":state.hw.forEach(function(x){x.released=true;x.releaseOn="";});hwDone("All shown to students");break;
+    case "hw-hide-all":state.hw.forEach(function(x){x.released=false;x.releaseOn="";});hwDone("All hidden from students");break;
     case "hw-all":hwSelect("all");break;
     case "hw-sel-off":hwSelect("off");break;
     case "hw-none":hwSelect("none");break;
