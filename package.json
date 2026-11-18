@@ -1,0 +1,10 @@
+{
+  "name": "page-by-page",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Page by Page reading app with teacher-controlled releases",
+  "dependencies": {
+    "@netlify/blobs": "^8.2.0"
+  }
+}

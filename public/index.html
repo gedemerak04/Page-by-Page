@@ -1,0 +1,1548 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Page by Page</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Andika:wght@400;700&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+  --desk:#17454D; --desk-deep:#0F343B; --on-desk:#F2F7F8; --on-desk-soft:#B9D0D4; --desk-line:rgba(255,255,255,.22);
+  --surface:#FFFFFF; --surface-ink:#1C2733; --surface-soft:#EEF3F6; --line:#D3DCE3; --muted:#56656F;
+  --heart-ui:#B4194F; --lesson-ui:#1B5FAA;
+  --paper:#FFFFFF; --page-ink:#1C2733; --paper-edge:#D7DFE6;
+  --heart:#B4194F; --lesson:#1B5FAA; --hl:#FFE066;
+  --accent:#FFB703; --accent-ink:#2A1E00;
+  --read:"Andika","Atkinson Hyperlegible","Segoe UI",system-ui,sans-serif;
+  --ui:"Atkinson Hyperlegible","Segoe UI",system-ui,sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --desk:#0C2328; --desk-deep:#071418; --on-desk:#E9F2F4; --on-desk-soft:#9DB8BD;
+    --surface:#15262D; --surface-ink:#E8F0F2; --surface-soft:#1D323A; --line:#2D4650; --muted:#9DB2B9;
+    --heart-ui:#FF8FB1; --lesson-ui:#8EC1FF;
+  }
+}
+:root[data-theme="dark"]{
+  --desk:#0C2328; --desk-deep:#071418; --on-desk:#E9F2F4; --on-desk-soft:#9DB8BD;
+  --surface:#15262D; --surface-ink:#E8F0F2; --surface-soft:#1D323A; --line:#2D4650; --muted:#9DB2B9;
+  --heart-ui:#FF8FB1; --lesson-ui:#8EC1FF;
+}
+html{scroll-padding-top:env(safe-area-inset-top,0px);height:100%;background:var(--desk)}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;height:100%;background:var(--desk);color:var(--on-desk);font-family:var(--ui);font-size:18px;line-height:1.4}
+#app{min-height:100%;display:flex;flex-direction:column}
+button,input,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+
+/* buttons */
+.btn{display:inline-flex;align-items:center;gap:.5em;border:2px solid transparent;border-radius:12px;padding:.6em 1.1em;font-weight:700;background:transparent;line-height:1.1;white-space:nowrap}
+.btn.primary{background:var(--accent);color:var(--accent-ink)}
+.btn.primary:hover{filter:brightness(1.06)}
+.btn.ghost{border-color:var(--desk-line);color:var(--on-desk)}
+.btn.ghost:hover{background:rgba(255,255,255,.08)}
+.btn.ghost[aria-pressed="true"]{background:var(--on-desk);color:var(--desk-deep);border-color:var(--on-desk)}
+.btn.line{border-color:var(--line);color:var(--surface-ink);background:var(--surface)}
+.btn.line:hover{background:var(--surface-soft)}
+.btn.danger{border-color:#B3261E;color:#fff;background:#B3261E}
+.btn[disabled]{opacity:.5;cursor:not-allowed}
+
+/* top bar */
+.bar{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:16px;padding:16px 28px;border-bottom:1px solid var(--desk-line)}
+.bar .left{justify-self:start;display:flex;gap:10px}
+.bar .right{justify-self:end;display:flex;gap:10px}
+.bar h1{margin:0;font-family:var(--read);font-size:1.7rem;font-weight:700;text-align:center;letter-spacing:.01em}
+.brand{font-family:var(--read);font-weight:700;font-size:1.5rem}
+
+/* library */
+.lib{padding:40px 48px 60px;max-width:1300px;width:100%;margin:0 auto}
+.lib h2{font-family:var(--read);font-size:2.2rem;margin:0 0 6px}
+.lib p.sub{margin:0 0 30px;color:var(--on-desk-soft);max-width:60ch}
+.shelf{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:34px 28px}
+.cover{display:flex;flex-direction:column;justify-content:space-between;width:100%;aspect-ratio:3/4;text-align:left;border:0;border-radius:6px 14px 14px 6px;padding:22px 20px 18px 30px;color:#fff;background:linear-gradient(90deg,rgba(0,0,0,.28) 0 14px,rgba(255,255,255,.12) 14px 16px,transparent 16px),var(--c);box-shadow:0 14px 26px rgba(0,0,0,.35);transition:transform .15s}
+.cover:hover{transform:translateY(-4px)}
+.cv-lesson{font-size:.95rem;opacity:.92}
+.cv-title{font-family:var(--read);font-weight:700;font-size:1.65rem;line-height:1.2}
+.cv-meta{font-size:.95rem;opacity:.92}
+.cover-actions{display:flex;gap:8px;margin-top:12px;align-items:center;min-height:40px}
+.link{background:none;border:0;padding:.3em .1em;color:var(--on-desk-soft);text-decoration:underline;text-underline-offset:3px}
+.link:hover{color:var(--on-desk)}
+.confirm{display:flex;gap:8px;align-items:center;font-size:.95rem}
+.empty{border:2px dashed var(--desk-line);border-radius:18px;padding:48px;text-align:center;max-width:640px}
+.empty h3{font-family:var(--read);font-size:1.6rem;margin:0 0 8px}
+
+/* reader */
+.stage{flex:1;display:grid;grid-template-columns:auto minmax(0,1080px) auto;justify-content:center;align-items:center;gap:22px;padding:26px 32px 12px}
+.turn{width:76px;height:76px;border-radius:50%;border:2px solid var(--desk-line);background:rgba(255,255,255,.06);color:var(--on-desk);font-size:2rem;display:grid;place-items:center}
+.turn:hover:not([disabled]){background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.turn[disabled]{opacity:.28;cursor:default}
+.leaf{position:relative;min-height:min(64vh,580px);display:flex;flex-direction:column;padding:26px 60px 18px 72px;color:var(--page-ink);border-radius:6px 18px 18px 6px;
+  background:linear-gradient(90deg,rgba(0,0,0,.16),rgba(0,0,0,0) 34px),var(--paper);
+  box-shadow:1px 1px 0 var(--paper-edge),3px 3px 0 var(--paper),4px 4px 0 var(--paper-edge),6px 6px 0 var(--paper),7px 7px 0 var(--paper-edge),0 26px 44px rgba(0,0,0,.4)}
+.leaf-top{display:flex;flex-wrap:wrap;align-items:center;gap:10px 16px}
+.lesson-label{font-size:1.05rem;font-weight:700;color:#3C4B58}
+.chip{display:inline-flex;align-items:center;gap:.4em;border:1.5px solid #C9D3DB;border-radius:999px;padding:.15em .75em;font-size:.95rem;color:#3C4B58;background:#fff}
+.chip .h{color:var(--heart)}
+.chip mark{background:var(--hl);color:var(--lesson);font-weight:700;border-radius:4px;padding:0 .2em}
+.sentence{flex:1;display:flex;align-items:center;padding:14px 0 20px}
+.sentence-inner{font-family:var(--read);font-size:clamp(2.6rem,4.3vw,4.9rem);line-height:1.6;word-spacing:.1em;letter-spacing:.01em;text-wrap:pretty;max-width:22ch}
+.sentence-inner.wide{max-width:none}
+.anim-next{animation:inR .22s ease-out}
+.anim-prev{animation:inL .22s ease-out}
+@keyframes inR{from{opacity:0;transform:translateX(26px)}to{opacity:1;transform:none}}
+@keyframes inL{from{opacity:0;transform:translateX(-26px)}to{opacity:1;transform:none}}
+.w.heart{color:var(--heart);font-weight:700;position:relative;white-space:nowrap}
+.w.heart::after{content:"\2665";position:absolute;left:50%;transform:translateX(-50%);bottom:-.5em;font-size:.34em;line-height:1}
+.w.lesson{color:var(--lesson);font-weight:700}
+.w.lesson mark{background:var(--hl);color:inherit;border-radius:.14em;padding:0 .05em}
+.editing .w{cursor:pointer;border-radius:10px}
+.editing .w:hover{outline:3px dashed var(--lesson);outline-offset:3px}
+.leaf-foot{display:flex;justify-content:space-between;align-items:center;color:#6A7884;font-size:1rem}
+.theend{font-family:var(--read);font-weight:700;color:var(--lesson)}
+.speak{display:inline-flex;align-items:center;gap:.5em;border:0;border-radius:12px;padding:.65em 1.2em;font-weight:700;font-size:1.1rem;background:var(--lesson);color:#fff}
+.speak:hover{filter:brightness(1.12)}
+.voicebar{display:flex;gap:20px;flex-wrap:wrap;justify-content:center;font-size:.95rem;margin-top:4px}
+.voicebar label{display:inline-flex;align-items:center;gap:8px}
+.voicebar select{background:var(--desk-deep);color:var(--on-desk);border:1px solid var(--desk-line);border-radius:8px;padding:.3em .5em;max-width:260px}
+.speak[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink)}
+.progress{display:flex;flex-direction:column;align-items:center;gap:8px;padding:6px 0 26px;color:var(--on-desk-soft)}
+.track{width:min(520px,60vw);height:8px;border-radius:99px;background:rgba(255,255,255,.18);overflow:hidden}
+.track i{display:block;height:100%;background:var(--accent);border-radius:99px;transition:width .25s}
+.banner{margin:14px auto 0;max-width:760px;text-align:center;background:var(--accent);color:var(--accent-ink);border-radius:12px;padding:.55em 1em;font-weight:700}
+
+/* word reading + help */
+.w{cursor:pointer;border-radius:.14em;transition:background .08s}
+.leaf:not(.editing) .w:hover{background:#EEF3F6}
+.w.picked{background:#E6DBFF;box-shadow:inset 0 -.12em 0 #6B3FD1}
+.w.speaking,.leaf:not(.editing) .w.speaking:hover{background:#BDF0C8;box-shadow:inset 0 -.14em 0 #1E8E3E}
+.sentence.all{align-items:flex-start}
+.all-title{font-family:var(--read);font-weight:700;font-size:1.15rem;color:var(--lesson)}
+.story-all{font-family:var(--read);font-size:clamp(1.7rem,2.7vw,2.7rem);line-height:2;word-spacing:.1em;max-height:min(54vh,520px);overflow:auto;padding:6px 10px 6px 0;width:100%}
+.sline{-webkit-box-decoration-break:clone;box-decoration-break:clone;border-radius:.2em;padding:.05em 0;transition:background .2s}
+.sline.cur{background:rgba(27,95,170,.1)}
+.speak.sm{font-size:1rem;padding:.5em 1em}
+.speak.alt{background:#fff;color:var(--lesson);border:2px solid var(--lesson)}
+.helpcard{display:flex;align-items:center;gap:14px 18px;flex-wrap:wrap;margin:0 0 12px;padding:12px 16px;border:2px solid #C9D3DB;border-radius:16px;background:#F5F8FA}
+.hw-big{font-family:var(--read);font-size:2.6rem;font-weight:700;line-height:1.15;border-radius:.14em;padding:0 .12em}
+.hw-big.heart{color:var(--heart)}.hw-big.lesson{color:var(--lesson)}
+.hw-big.say{background:#BDF0C8;box-shadow:inset 0 -.12em 0 #1E8E3E}
+.hw-big .L.on{background:#BDF0C8;box-shadow:inset 0 -.12em 0 #1E8E3E;border-radius:.12em}
+.helpcard .tip{flex:1;min-width:200px;color:#3C4B58;font-size:1.05rem}
+.helpcard .tip mark{background:var(--hl);color:var(--lesson);font-weight:700;border-radius:4px;padding:0 .2em}
+
+/* progress */
+.chars{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-top:-6px}
+.chars span{color:var(--muted);font-size:.95rem;margin-right:2px}
+.chars .btn{padding:.3em .7em;font-family:var(--read);font-size:1.1rem}
+.pg{padding:30px 48px 60px;max-width:1200px;width:100%;margin:0 auto;display:flex;flex-direction:column;gap:22px}
+.pg h2{font-family:var(--read);font-size:2.1rem;margin:0}
+.pg .sub{margin:4px 0 0;color:var(--on-desk-soft);max-width:70ch}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px}
+.stat{background:var(--surface);color:var(--surface-ink);border-radius:16px;padding:18px 20px;box-shadow:0 10px 24px rgba(0,0,0,.25)}
+.stat b{display:block;font-family:var(--read);font-size:2.4rem;line-height:1.1}
+.stat span{color:var(--muted);font-size:.95rem}
+.card{background:var(--surface);color:var(--surface-ink);border-radius:18px;padding:24px 26px;box-shadow:0 14px 30px rgba(0,0,0,.28)}
+.card h3{margin:0 0 4px;font-family:var(--read);font-size:1.4rem}
+.card .hint{margin:0 0 14px;color:var(--muted);font-size:.95rem}
+.card-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px 20px;flex-wrap:wrap;margin-bottom:6px}
+.ctl{display:flex;gap:10px;flex-wrap:wrap}
+.seg{display:inline-flex;border:2px solid var(--line);border-radius:12px;overflow:hidden}
+.seg button{border:0;background:var(--surface);color:var(--surface-ink);padding:.45em .95em;font-weight:700}
+.seg button+button{border-left:2px solid var(--line)}
+.seg button[aria-pressed="true"]{background:var(--lesson-ui);color:var(--surface)}
+.chart{display:flex;align-items:flex-end;gap:10px;height:200px;border-bottom:2px solid var(--line)}
+.col{flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;min-width:0}
+.col .v{font-weight:700;font-size:.95rem;margin-bottom:4px}
+.col .b{width:100%;max-width:64px;border-radius:8px 8px 0 0;background:var(--lesson-ui);min-height:3px}
+.col.now .b{background:var(--accent)}
+.xl{display:flex;gap:10px}
+.xl div{flex:1;min-width:0;text-align:center;font-size:.85rem;color:var(--muted);padding-top:6px}
+.dots{display:flex;gap:12px;flex-wrap:wrap}
+.dot{width:52px;text-align:center;font-size:.85rem;color:var(--muted)}
+.dot i{display:grid;place-items:center;width:44px;height:44px;margin:0 auto 4px;border-radius:50%;border:2px solid var(--line);font-style:normal;font-weight:700;color:var(--surface-ink)}
+.dot.on i{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.dot.today i{outline:3px solid var(--lesson-ui);outline-offset:2px}
+.pgrid{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.pc{width:58px;border-radius:10px;border:2px solid var(--line);text-align:center;padding:4px 0 5px;font-size:.8rem;color:var(--muted)}
+.pc b{display:block;font-size:1.2rem;font-family:var(--read);color:var(--surface-ink)}
+.pc.l1,.pc.l2,.pc.l3,.pc.l4{color:#5A4300;border-color:transparent}
+.pc.l1 b,.pc.l2 b,.pc.l3 b,.pc.l4 b{color:#2A1E00}
+.pc.l1{background:#FFF1BF}.pc.l2{background:#FFD966}.pc.l3{background:#FFB703}.pc.l4{background:#F28E00}
+.hw em{font-style:normal;background:var(--heart-ui);color:var(--surface);border-radius:999px;padding:0 .55em;font-size:.85rem;margin-right:.3em}
+.hw.plain{border-color:var(--lesson-ui);color:var(--lesson-ui)}
+.hw.plain em{background:var(--lesson-ui)}
+.wordlist{display:flex;flex-wrap:wrap;gap:8px}
+
+
+/* class lessons + teacher mode */
+.shelf-h{font-family:var(--read);font-size:1.5rem;margin:34px 0 18px}
+.tbadge{font-family:var(--ui);font-size:.8rem;font-weight:700;background:var(--accent);color:var(--accent-ink);border-radius:999px;padding:.15em .7em;margin-left:8px;vertical-align:middle}
+.tbar{display:flex;flex-wrap:wrap;gap:12px 20px;justify-content:space-between;align-items:center;margin:0 0 30px;padding:16px 20px;background:var(--desk-deep);border:2px solid var(--accent);border-radius:16px}
+.tbar .ctl{display:flex;gap:10px;flex-wrap:wrap}
+.tnote{flex-basis:100%;margin:0;color:var(--on-desk-soft);font-size:.95rem;max-width:90ch}
+.rel{margin-top:8px;font-size:.92rem;display:flex;flex-direction:column;gap:6px}
+.rel label{display:flex;align-items:center;gap:8px}
+.rel input[type=checkbox]{width:20px;height:20px;accent-color:var(--accent)}
+.rel input[type=date]{font:inherit;background:var(--desk-deep);color:var(--on-desk);border:1px solid var(--desk-line);border-radius:8px;padding:.2em .4em;color-scheme:dark}
+.relst{font-weight:700}
+.rel.on .relst{color:#8EE6A4}
+.rel.sched .relst{color:var(--accent)}
+.rel.off .relst{color:var(--on-desk-soft)}
+
+/* heart words managed by the teacher */
+.hwb{border:1.5px solid var(--heart-ui);color:var(--heart-ui);background:transparent;border-radius:999px;padding:.25em .9em;font-family:var(--read);font-weight:700;font-size:1.15rem}
+.hwb:hover{background:var(--heart-ui);color:var(--surface)}
+.hwt{border:1.5px solid var(--heart-ui);color:var(--heart-ui);background:transparent;border-radius:999px;padding:.2em .8em;font-family:var(--read);font-weight:700;font-size:1.05rem}
+.hwt.st-off{border-style:dashed;color:var(--muted);border-color:var(--muted)}
+.hwt.st-sched{border-style:dotted;color:var(--lesson-ui);border-color:var(--lesson-ui)}
+.hwt small{font-family:var(--ui);font-weight:400;font-size:.75rem}
+.hwt.sel{background:var(--surface-ink);color:var(--surface);border-color:var(--surface-ink);border-style:solid}
+.hwmode .field{flex:1}
+.selbar{border-top:2px solid var(--line);padding-top:12px;display:flex;flex-direction:column;gap:10px}
+.selbar .ctl{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.selbar .link{color:var(--lesson-ui)}
+.schedset{display:flex;gap:8px;align-items:center}
+.schedset .field{flex:1}
+.relpoint{display:flex;gap:10px;align-items:center;flex-wrap:wrap;flex-basis:100%}
+.relpoint .field{background:var(--desk);color:var(--on-desk);border-color:var(--desk-line)}
+.lib .empty{margin:0 0 24px}
+.empty .row{margin-top:18px}
+
+.selbar .btn{padding:.5em .8em;font-size:.95rem}
+.syncst{margin-left:10px;font-size:.9rem;color:var(--on-desk-soft)}
+.syncst.bad{color:#FF9A92}
+/* drawer */
+.scrim{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:20}
+.drawer{position:fixed;top:0;right:0;bottom:0;width:min(440px,92vw);z-index:21;background:var(--surface);color:var(--surface-ink);padding:calc(24px + env(safe-area-inset-top,0px)) 26px calc(24px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;gap:14px;box-shadow:-12px 0 40px rgba(0,0,0,.35)}
+.drawer h2{margin:0;font-family:var(--read);font-size:1.6rem}
+.drawer .hint{margin:0;color:var(--muted);font-size:.95rem}
+.add-row{display:flex;gap:8px}
+.field{flex:1;min-width:0;border:2px solid var(--line);border-radius:12px;padding:.6em .8em;background:var(--surface);color:var(--surface-ink)}
+.field:focus-visible{outline-offset:1px}
+.words{display:flex;flex-wrap:wrap;gap:8px;overflow:auto;padding:4px 2px 8px;align-content:flex-start}
+.hw{display:inline-flex;align-items:center;gap:6px;border:1.5px solid var(--heart-ui);color:var(--heart-ui);border-radius:999px;padding:.2em .4em .2em .85em;font-family:var(--read);font-weight:700;font-size:1.05rem}
+.hw button{border:0;background:transparent;color:inherit;border-radius:50%;width:26px;height:26px;line-height:1;font-size:1.1rem;display:grid;place-items:center}
+.hw button:hover{background:var(--heart-ui);color:var(--surface)}
+.drawer-head{display:flex;justify-content:space-between;align-items:center}
+
+/* import */
+.panel{background:var(--surface);color:var(--surface-ink);border-radius:18px;padding:30px;box-shadow:0 18px 40px rgba(0,0,0,.3)}
+.wrap{padding:34px 48px 60px;max-width:1200px;width:100%;margin:0 auto}
+.wrap h2{font-family:var(--read);font-size:2rem;margin:0 0 6px}
+.wrap .sub{margin:0 0 24px;color:var(--on-desk-soft)}
+.drop{border:3px dashed var(--line);border-radius:18px;padding:54px 24px;text-align:center;background:var(--surface-soft)}
+.drop.over{border-color:var(--accent);background:var(--surface)}
+.drop h3{font-family:var(--read);font-size:1.5rem;margin:0 0 6px}
+.drop p{margin:0 0 20px;color:var(--muted)}
+.row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.cam{margin-top:20px;text-align:center}
+.cam video{max-width:100%;max-height:48vh;border-radius:12px;background:#000}
+.note{margin-top:16px;padding:.7em 1em;border-radius:10px;background:var(--surface-soft);color:var(--surface-ink);border-left:5px solid var(--accent)}
+.alt{margin-top:18px;text-align:center}
+.alt .link{color:var(--lesson-ui)}
+.reading{display:grid;place-items:center;gap:16px;padding:60px 20px;text-align:center}
+.spin{width:54px;height:54px;border-radius:50%;border:6px solid var(--line);border-top-color:var(--accent);animation:spin 1s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.review{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:30px}
+.review img{width:100%;border-radius:12px;border:1px solid var(--line);display:block}
+.form{display:flex;flex-direction:column;gap:14px}
+.form label{display:flex;flex-direction:column;gap:6px;font-weight:700}
+.form label small{font-weight:400;color:var(--muted)}
+.form textarea.field{min-height:300px;font-family:var(--read);font-size:1.15rem;line-height:1.55;resize:vertical}
+.err{color:#B3261E;font-weight:700}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .err{color:#FF9A92}}
+:root[data-theme="dark"] .err{color:#FF9A92}
+.toast{position:fixed;left:50%;bottom:calc(28px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--on-desk);color:var(--desk-deep);border-radius:999px;padding:.6em 1.2em;font-weight:700;z-index:40;box-shadow:0 8px 24px rgba(0,0,0,.35)}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+
+@media (max-width:900px){
+  .stage{grid-template-columns:1fr;padding:16px}
+  .turn{display:none}
+  .leaf{padding:22px 24px 16px 36px}
+  .review{grid-template-columns:1fr}
+  .bar{grid-template-columns:1fr;justify-items:center;padding:12px 16px}
+  .bar .left,.bar .right{justify-self:center}
+  .lib,.wrap,.pg{padding-left:20px;padding-right:20px}
+}
+@media (prefers-reduced-motion:reduce){
+  .anim-next,.anim-prev{animation:none}.cover{transition:none}.spin{animation-duration:2.5s}
+}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<div id="drawer"></div>
+<div id="toast" aria-live="polite"></div>
+<input type="file" id="file" accept="image/jpeg,image/png,image/webp,image/gif,.jpg,.jpeg,.png,.webp,.gif" hidden>
+<input type="file" id="jsonfile" accept=".json,application/json" hidden>
+
+<script>
+(function(){
+"use strict";
+
+var COVERS=["#3D5A98","#7B4B94","#C27C00","#3A7D44","#B83E5A","#4A5A6A"];
+var KEY="pagebypage.v1";
+var CKEY="pagebypage.catalog.v1",TKEY="pagebypage.teacher";
+var TEACHER=false;
+try{var qs=location.search||"";if(/[?&]teacher=off\b/.test(qs))localStorage.removeItem(TKEY);else if(/[?&]teacher(=|&|$)/.test(qs))localStorage.setItem(TKEY,"1");TEACHER=localStorage.getItem(TKEY)==="1";}catch(e){}
+var classStories=[],classHW=[];
+
+var state=loadLocal();
+var firstRun=false;
+if(!state){ state={v:1,touched:false,heartWords:[],hw:[],stories:[]}; firstRun=true; saveLocal(); }
+normState();
+var ui={screen:"library",storyId:null,page:0,edit:false,drawer:false,draft:null,confirmDel:null,dir:"",photoOk:null,pv:"week",pm:"pages",helpWord:null,run:null,confirmClear:false,queue:[],qTotal:0,qIdx:0,hwSel:{},hwMode:"off",hwDate:"",hwSDate:"",hwDelAsk:false,relUpto:""};
+var speaking=false, speakId=0, canSpeak=("speechSynthesis" in window)&&typeof SpeechSynthesisUtterance!=="undefined";
+var dbDoc=null, dbSaving=false, dbDirty=false, pageTimer=null, toastTimer=null, ctl=null, camStream=null;
+
+if(TEACHER){ui.screen="signin";ui.signin={busy:true};}
+var $app=document.getElementById("app");
+var $drawer=document.getElementById("drawer");
+var $toast=document.getElementById("toast");
+var $file=document.getElementById("file");
+var $json=document.getElementById("jsonfile");
+
+/* ---------- helpers ---------- */
+function clone(o){return JSON.parse(JSON.stringify(o));}
+function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];});}
+function norm(w){return String(w).toLowerCase().replace(/[\u2018\u2019`]/g,"'").trim();}
+function uid(){return "s"+Date.now().toString(36)+Math.random().toString(36).slice(2,6);}
+function hash(s){var h=0;for(var i=0;i<s.length;i++){h=(h*31+s.charCodeAt(i))|0;}return Math.abs(h);}
+function getStory(id){return allStories().filter(function(s){return s.id===id;})[0]||null;}
+function heartSet(){var o={};hwWords().forEach(function(w){o[norm(w)]=1;});return o;}
+async function useCap(n){try{return window.claude?await window.claude.use(n):null;}catch(e){return null;}}
+
+/* ---------- storage ---------- */
+function loadLocal(){try{var r=localStorage.getItem(KEY);return r?JSON.parse(r):null;}catch(e){return null;}}
+function saveLocal(){try{localStorage.setItem(KEY,JSON.stringify(state));}catch(e){}}
+function persist(){state.touched=true;saveLocal();dbDirty=true;if(dbDoc)flushDb();if(TEACHER)syncSoon();}
+function persistSoon(){clearTimeout(pageTimer);pageTimer=setTimeout(persist,900);}
+async function flushDb(){
+  if(dbSaving)return;dbSaving=true;
+  try{while(dbDirty){dbDirty=false;await dbDoc.set(clone(state));}}catch(e){console.error("save failed",e);}
+  dbSaving=false;
+}
+function logKey(e){return e.t+"|"+e.k+"|"+e.s+"|"+(e.p==null?"":e.p)+"|"+(e.w||"");}
+function normState(){
+  if(!Array.isArray(state.log))state.log=[];
+  if(!state.clsPos)state.clsPos={};
+  if(!Array.isArray(state.heartWords))state.heartWords=[];
+  if(!Array.isArray(state.hw))state.hw=state.heartWords.map(function(w){return {w:w,released:false,releaseOn:""};});
+  if(!state.speedV){state.speedV=2;if(!state.speed||state.speed>=0.85)state.speed=0.65;}
+}
+function mergeRemote(remote){
+  if(!state.touched){state=remote;normState();return;}
+  var seen={};state.heartWords.forEach(function(w){seen[norm(w)]=1;});
+  (remote.heartWords||[]).forEach(function(w){if(!seen[norm(w)]){state.heartWords.push(w);seen[norm(w)]=1;}});
+  var ids={};state.stories.forEach(function(s){ids[s.id]=1;});
+  (remote.stories||[]).forEach(function(s){if(!ids[s.id])state.stories.push(s);});
+  var ks={};state.log.forEach(function(e){ks[logKey(e)]=1;});
+  (remote.log||[]).forEach(function(e){var k=logKey(e);if(!ks[k]){state.log.push(e);ks[k]=1;}});
+  state.log.sort(function(a,b){return a.t-b.t;});
+}
+async function initDb(){
+  var user=await useCap("user"),db=await useCap("db");
+  if(!user||!db)return;
+  var id=await user.id();if(!id)return;
+  var ref=db.doc("data/users/"+id+"/reader");
+  var snap;
+  try{snap=await Promise.race([ref.get(),new Promise(function(_,rej){setTimeout(function(){rej(new Error("timeout"));},10000);})]);}
+  catch(e){return;}
+  var data=snap.exists?snap.data():null;
+  if(data&&Array.isArray(data.stories)&&Array.isArray(data.heartWords)){
+    mergeRemote(data);saveLocal();
+    if(ui.screen==="library"||ui.screen==="reader")render();
+    dbDoc=ref;
+    if(state.touched){dbDirty=true;flushDb();}
+  }else{
+    dbDoc=ref;dbDirty=true;flushDb();
+  }
+}
+
+/* ---------- text processing ---------- */
+var TAGV="said|says|asks?|asked|yells?|yelled|thinks?|thought|shouts?|shouted|replies|replied|cries|cried|whispers?|whispered|calls?|called";
+var TAG=new RegExp("^(?:(?:[A-Z][a-z]+|he|she|I|they|we)\\s+(?:"+TAGV+")|(?:"+TAGV+")\\s+(?:[A-Z][a-z]+|he|she|I|they|we))\\b","i");
+/* open quotes minus close quotes (a leftover straight quote counts as an open one) */
+function qbal(s){
+  var o=(s.match(/\u201C/g)||[]).length,c=(s.match(/\u201D/g)||[]).length,st=(s.match(/"/g)||[]).length;
+  return o-c+(st%2);
+}
+function splitSentences(text){
+  var t=String(text).replace(/\s+/g," ").trim();if(!t)return [];
+  var segs=t.match(/.+?[.!?]+[\u201D"]?(?=\s|$)|.+$/g)||[];
+  var raw=[];
+  segs.forEach(function(x){x=x.trim();if(x)raw.push(x);});
+  var out=[],i=0;
+  while(i<raw.length){
+    var cur=raw[i],j=i;
+    /* a quote that is still open: keep joining up to 2 more pieces, but only if that closes it */
+    if(qbal(cur)>0){
+      var acc=cur,k=i;
+      while(k+1<raw.length&&k<i+2&&qbal(acc)>0){k++;acc+=" "+raw[k];}
+      if(qbal(acc)<=0){cur=acc;j=k;}
+    }
+    i=j+1;
+    var prev=out[out.length-1];
+    /* a sentence that ends in ! or ? and is followed by a lowercase word is one sentence: \u201CGO!\u201D the mice race. */
+    if(prev&&/[?!][\u201D"]?$/.test(prev)&&/^[a-z]/.test(cur)){out[out.length-1]=prev+" "+cur;continue;}
+    if(prev&&/[.?!,][\u201D"]$/.test(prev)&&!/^[\u201C"]/.test(cur)&&TAG.test(cur))out[out.length-1]=prev+" "+cur;
+    else out.push(cur);
+  }
+  return out;
+}
+function normPat(x){
+  x=String(x||"").toLowerCase().replace(/\s+/g,"");
+  if(/^[a-z][\-\u2013\u2014][a-z]$/.test(x))x=x.replace(/[\-\u2013\u2014]/,"_");
+  else if(/^[\-\u2013\u2014][a-z]+$/.test(x))x=x.slice(1)+"$";
+  else if(/^[a-z]+[\-\u2013\u2014]$/.test(x))x="^"+x.slice(0,-1);
+  return x.replace(/[^a-z_^$]/g,"");
+}
+/* ^un = start of a word, ing$ = end of a word; shown to people as un- and -ing */
+function patLabel(p){return p.charAt(0)==="^"?p.slice(1)+"-":p.charAt(p.length-1)==="$"?"-"+p.slice(0,-1):p;}
+function derivePatterns(lesson){
+  var t=String(lesson||""),out=[];
+  var after=/lesson\s*[:.#-]?\s*\d+[a-z]?\s*[:.\-]?\s*(.*)$/i.exec(t);
+  var preToks=after?after[1].replace(/\([^)]*\)/g,"").replace(/\/[^\/]*\//g,",").split(/\s*(?:,|\band\b|\bor\b)\s*/i).map(normPat).filter(Boolean):[];
+  var split=preToks.filter(function(x){return /^[a-z]+_[a-z]+$/.test(x);});
+  if(split.length)return split;
+  var m=/\(\s*as\s+in\s+([^)]+)\)/i.exec(t)||/as\s+in\s+([A-Za-z][A-Za-z,\s]*?)\s*[)\]]?\s*$/i.exec(t);
+  if(m)return m[1].split(/[\s,]+/).map(normPat).filter(function(x){return x&&x!=="and";});
+  return preToks.filter(function(x){return /^[a-z]{2,}$/.test(x);});
+}
+function parsePatterns(txt){return String(txt||"").split(/[\s,]+/).map(normPat).filter(Boolean);}
+
+/* Where a lesson pattern sits inside a word. "nk" matches every "nk"; "a_e" matches a, one consonant, then e
+   (cave, maze, snakes) and marks only the a and the e; "^un" only the start of a word, "ing$" only the end.
+   Returns [[start,end],...] or null. */
+function patRanges(low,pat){
+  var out=[],i;
+  var a=pat.charAt(0)==="^",z=pat.charAt(pat.length-1)==="$";
+  var core=pat.replace(/^\^/,"").replace(/\$$/,"");
+  if(!core)return null;
+  if(a||z){
+    if(a&&z)return low===core?[[0,core.length]]:null;
+    if(low.length<=core.length)return null;
+    if(a)return low.indexOf(core)===0?[[0,core.length]]:null;
+    return low.slice(-core.length)===core?[[low.length-core.length,low.length]]:null;
+  }
+  pat=core;
+  if(pat.indexOf("_")<0){
+    var at;i=0;
+    while((at=low.indexOf(pat,i))>-1){out.push([at,at+pat.length]);i=at+pat.length;}
+    return out.length?out:null;
+  }
+  var parts=pat.split("_");
+  var m=new RegExp(parts.join("[b-df-hj-np-tv-z]")+"(?=(?:s|d)?$)").exec(low);
+  if(!m)return null;
+  var off=m.index;
+  parts.forEach(function(pt,k){out.push([off,off+pt.length]);off+=pt.length+1;});
+  return out;
+}
+function renderSentence(text,story,sx){
+  var hs=heartSet();
+  sx=sx||0;
+  var pats=(story.patterns||[]).map(function(p){return p.toLowerCase();}).filter(Boolean);
+  var re=/([A-Za-z]+(?:[\u2019'][A-Za-z]+)*)|([^A-Za-z]+)/g,m,out="";
+  while((m=re.exec(text))){
+    if(m[2]){out+=esc(m[2]);continue;}
+    var word=m[1],low=word.toLowerCase(),n=norm(word);
+    var attr=' data-w="'+esc(word)+'" data-sx="'+sx+'" data-en="'+(m.index+m[0].length)+'"';
+    if(hs[n]){out+='<span class="w heart"'+attr+'>'+esc(word)+'</span>';continue;}
+    var rg=null;
+    for(var pi=0;pi<pats.length&&!rg;pi++)rg=patRanges(low,pats[pi]);
+    if(rg){
+      var html="",i=0;
+      rg.forEach(function(r){html+=esc(word.slice(i,r[0]))+"<mark>"+esc(word.slice(r[0],r[1]))+"</mark>";i=r[1];});
+      html+=esc(word.slice(i));
+      out+='<span class="w lesson"'+attr+'>'+html+'</span>';
+    }else out+='<span class="w"'+attr+'>'+esc(word)+'</span>';
+  }
+  return out;
+}
+
+/* ---------- views ---------- */
+function render(){
+  if(ui.screen==="reader"){var s=getStory(ui.storyId);if(!s){ui.screen="library";}}
+  if(ui.screen==="library")$app.innerHTML=viewLibrary();
+  else if(ui.screen==="reader")$app.innerHTML=viewReader();
+  else if(ui.screen==="import")$app.innerHTML=viewImport();
+  else if(ui.screen==="progress")$app.innerHTML=viewProgress();
+  else if(ui.screen==="signin")$app.innerHTML=viewSignin();
+  renderDrawer();
+}
+function keepScroll(){var y=window.scrollY;render();window.scrollTo(0,y);}
+
+function lessonNum(st){
+  var m=/lesson\s*[:.#-]?\s*(\d+)/i.exec(st.lesson||"");
+  return m?parseInt(m[1],10):-1;
+}
+function sortList(list,asc){
+  return list.slice().sort(function(a,b){
+    var d=lessonNum(a)-lessonNum(b);if(!asc)d=-d;
+    return d||(asc?((a.createdAt||0)-(b.createdAt||0)):((b.createdAt||0)-(a.createdAt||0)));
+  });
+}
+function sortedStories(){return sortList(allStories());}
+function coverCard(s,per){
+  var c=COVERS[hash(s.id)%COVERS.length];
+  var o=per[s.id];
+  var meta=s.pages.length+" pages"+((s.lastPage>0&&s.lastPage<s.pages.length)?" \u2022 on page "+(s.lastPage+1):"")+((o&&o.fin)?" \u2022 finished "+o.fin+"\u00D7":"");
+  var acts;
+  if(s.cls)acts="";
+  else if(ui.confirmDel===s.id)acts='<div class="confirm"><span>Delete this story?</span><button class="btn danger" data-act="delete-yes" data-id="'+s.id+'">Delete</button><button class="btn ghost" data-act="delete-no">Keep</button></div>';
+  else acts='<button class="link" data-act="edit" data-id="'+s.id+'">Edit text</button><button class="link" data-act="delete-ask" data-id="'+s.id+'">Delete</button>';
+  return '<article><button class="cover" style="--c:'+c+'" data-act="open" data-id="'+s.id+'" aria-label="Read '+esc(s.title)+'">'
+    +'<span class="cv-lesson">'+esc(s.lesson||"")+'</span><span class="cv-title">'+esc(s.title)+'</span><span class="cv-meta">'+esc(meta)+'</span></button>'
+    +'<div class="cover-actions">'+acts+'</div>'+(TEACHER?relControls(s):"")+'</article>';
+}
+function shelf(list,per){return '<div class="shelf">'+list.map(function(s){return coverCard(s,per);}).join("")+'</div>';}
+function viewLibrary(){
+  var per=storyStats();
+  var mine=sortList(state.stories,TEACHER),cls=sortList(classStories);
+  var h2="Stories",sub="Pick a book to read. Each sentence gets its own page.",body="";
+  if(TEACHER){
+    h2="Master lessons";
+    sub="Choose which lessons students can see. Hidden lessons never leave this browser.";
+    body=mine.length?shelf(mine,per)
+      :'<div class="empty"><h3>No lessons yet</h3><p>Load the starter lessons, or add your own from photos.</p><div class="row"><button class="btn primary" data-act="load-starter">Load starter lessons</button><button class="btn ghost" data-act="new">Add lessons from photos</button></div></div>';
+  }else{
+    var note='<div class="empty"><h3>No stories yet</h3><p>Your teacher hasn\u2019t released any stories yet. Check back soon!</p></div>';
+    if(cls.length&&mine.length)body='<h3 class="shelf-h">Class lessons</h3>'+shelf(cls,per)+'<h3 class="shelf-h">My stories</h3>'+shelf(mine,per);
+    else if(cls.length)body=shelf(cls,per);
+    else if(mine.length)body=note+'<h3 class="shelf-h">My stories</h3>'+shelf(mine,per);
+    else body=note;
+  }
+  return '<header class="bar"><div class="left"><span class="brand">Page by Page'+(TEACHER?' <small class="tbadge">Teacher mode</small>':'')+'</span></div><div></div><div class="right">'
+    +'<button class="btn ghost" data-act="progress">\uD83D\uDCC8 Progress</button>'
+    +'<button class="btn ghost" data-act="open-drawer">\u2665 Heart words ('+hwWords().length+')</button>'
+    +'<button class="btn primary" data-act="new">'+(TEACHER?"+ Add lessons from photos":"+ New story from a photo")+'</button></div></header>'
+    +'<main class="lib"><h2>'+h2+'</h2><p class="sub">'+sub+'</p>'+(TEACHER?teacherBar():"")+body+'</main>';
+}
+
+function speakLabel(){
+  if(speaking)return "\u25A0 Stop";
+  var s=getStory(ui.storyId);
+  return (s&&ui.page>=s.pages.length)?"\uD83D\uDD0A Read the whole story":"\uD83D\uDD0A Read aloud";
+}
+function viewReader(){
+  var s=getStory(ui.storyId);
+  var n=s.pages.length;
+  if(ui.page>n)ui.page=n;if(ui.page<0)ui.page=0;
+  var isSum=ui.page===n;
+  var pct=Math.round(ui.page/n*100);
+  var pats=(s.patterns||[]).filter(Boolean);
+  var lessonChip=pats.length?'<span class="chip"><mark>'+esc(pats.map(patLabel).join(", "))+'</mark> words</span>':"";
+  var label=isSum?"The whole story":"Page "+(ui.page+1)+" of "+n;
+  var body;
+  if(isSum){
+    body='<div class="sentence all"><div class="story-all '+ui.dir+'" id="storyAll">'
+      +s.pages.map(function(t,i){return '<span class="sline" data-sl="'+i+'">'+renderSentence(t,s,i)+'</span> ';}).join("")
+      +'</div></div>';
+  }else{
+    body='<div class="sentence"><div class="sentence-inner '+ui.dir+'" id="sent">'+renderSentence(s.pages[ui.page]||"",s,ui.page)+'</div></div>';
+  }
+  return '<header class="bar"><div class="left"><button class="btn ghost" data-act="home">\u2190 My stories</button></div>'
+    +'<h1>'+esc(s.title)+'</h1>'
+    +'<div class="right">'+(TEACHER?'<button class="btn ghost" data-act="toggle-edit" aria-pressed="'+ui.edit+'">Mark heart words</button>':"")
+    +'<button class="btn ghost" data-act="progress">\uD83D\uDCC8 Progress</button>'
+    +'<button class="btn ghost" data-act="open-drawer">\u2665 Heart words ('+hwWords().length+')</button></div></header>'
+    +(ui.edit&&TEACHER?'<div class="banner">Tap any word to add it to your heart words (hidden from students until you show it), or tap a heart word to remove it.</div>':"")
+    +'<main class="stage">'
+    +'<button class="turn" data-act="prev" aria-label="Previous page" '+(ui.page===0?"disabled":"")+'>\u2039</button>'
+    +'<section class="leaf'+(ui.edit?" editing":"")+'" aria-label="'+label+'">'
+    +'<div class="leaf-top"><span class="lesson-label">'+esc(s.lesson||"")+'</span>'+lessonChip+'<span class="chip"><span class="h">\u2665</span> heart words</span>'+(isSum?'<span class="all-title">The whole story</span>':'')+'</div>'
+    +body
+    +'<div id="helpCard" role="status" aria-live="polite"></div>'
+    +'<div class="leaf-foot"><span>'+(isSum?"\u2605":ui.page+1)+'</span>'+(canSpeak?'<button class="speak" id="speakBtn" data-act="speak" aria-pressed="'+speaking+'">'+speakLabel()+'</button>':'<span></span>')+(isSum?'<span class="theend">The End</span>':'<span style="min-width:60px"></span>')+'</div>'
+    +'</section>'
+    +'<button class="turn" data-act="next" aria-label="Next page" '+(isSum?"disabled":"")+'>\u203A</button>'
+    +'</main>'
+    +'<div class="progress"><div class="track"><i style="width:'+pct+'%"></i></div><span>'+label+'</span>'+(canSpeak?voiceBar():"")+'</div>';
+}
+
+/* ---------- progress tracking ---------- */
+var MON=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+function dkey(t){var d=new Date(t);return d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate();}
+function mondayOf(t){var d=new Date(t);d.setHours(0,0,0,0);d.setDate(d.getDate()-((d.getDay()+6)%7));return d;}
+function fmtDate(t){var d=new Date(t);return MON[d.getMonth()]+" "+d.getDate();}
+function logEv(k,x){
+  var e={t:Date.now(),k:k,s:ui.storyId};
+  if(x){for(var q in x)e[q]=x[q];}
+  state.log.push(e);
+  if(state.log.length>20000)state.log.splice(0,state.log.length-20000);
+  persistSoon();
+}
+function buckets(mode){
+  var out=[],i,st,en;
+  if(mode==="month"){
+    var now=new Date();
+    for(i=5;i>=0;i--){
+      st=new Date(now.getFullYear(),now.getMonth()-i,1);en=new Date(now.getFullYear(),now.getMonth()-i+1,1);
+      out.push({st:+st,en:+en,label:MON[st.getMonth()]+((st.getMonth()===0||i===5)?" \u2019"+String(st.getFullYear()).slice(2):""),pages:0,fin:0,dayset:{},cur:i===0});
+    }
+  }else{
+    var m=mondayOf(Date.now());
+    for(i=7;i>=0;i--){
+      st=new Date(m);st.setDate(st.getDate()-7*i);en=new Date(st);en.setDate(en.getDate()+7);
+      out.push({st:+st,en:+en,label:fmtDate(st),pages:0,fin:0,dayset:{},cur:i===0});
+    }
+  }
+  state.log.forEach(function(e){
+    if(e.k!=="p"&&e.k!=="f")return;
+    for(var j=0;j<out.length;j++){
+      var b=out[j];
+      if(e.t>=b.st&&e.t<b.en){if(e.k==="p")b.pages++;else b.fin++;b.dayset[dkey(e.t)]=1;break;}
+    }
+  });
+  out.forEach(function(b){b.days=Object.keys(b.dayset).length;});
+  return out;
+}
+function storyStats(){
+  var per={};
+  state.log.forEach(function(e){
+    if(!e.s)return;
+    var o=per[e.s]||(per[e.s]={pages:{},fin:0,total:0,last:0,aloud:0});
+    if(e.k==="p"){o.pages[e.p]=(o.pages[e.p]||0)+1;o.total++;}
+    else if(e.k==="f")o.fin++;
+    else if(e.k==="a")o.aloud++;
+    if((e.k==="p"||e.k==="f")&&e.t>o.last)o.last=e.t;
+  });
+  return per;
+}
+function streakInfo(){
+  var set={};
+  state.log.forEach(function(e){if(e.k==="p"||e.k==="f"){var k=dkey(e.t);set[k]=(set[k]||0)+1;}});
+  var today=new Date();today.setHours(0,0,0,0);
+  var c=new Date(today),n=0;
+  if(!set[dkey(+c)])c.setDate(c.getDate()-1);
+  while(set[dkey(+c)]){n++;c.setDate(c.getDate()-1);}
+  var days=[],m=mondayOf(Date.now()),names=["M","T","W","T","F","S","S"];
+  for(var i=0;i<7;i++){
+    var x=new Date(m);x.setDate(x.getDate()+i);
+    days.push({name:names[i],n:set[dkey(+x)]||0,today:dkey(+x)===dkey(+today)});
+  }
+  return {streak:n,days:days};
+}
+function statCard(n,label){return '<div class="stat"><b>'+n+'</b><span>'+label+'</span></div>';}
+function viewProgress(){
+  var per=storyStats(),wk=buckets("week"),cw=wk[wk.length-1],si=streakInfo();
+  var totalFin=0;state.log.forEach(function(e){if(e.k==="f")totalFin++;});
+  var head='<header class="bar"><div class="left"><button class="btn ghost" data-act="home">\u2190 My stories</button></div><h1>Progress</h1><div></div></header>';
+  var stats='<div class="stats">'
+    +statCard(cw.pages,cw.pages===1?"page finished this week":"pages finished this week")
+    +statCard(cw.fin,cw.fin===1?"story finished this week":"stories finished this week")
+    +statCard(si.streak,si.streak===1?"day in a row":"days in a row")
+    +statCard(totalFin,totalFin===1?"story finished in all":"stories finished in all")
+    +'</div>';
+  var dots='<div class="card"><h3>This week</h3><p class="hint">The number is how many pages were finished that day.</p><div class="dots">'
+    +si.days.map(function(d){return '<div class="dot'+(d.n?" on":"")+(d.today?" today":"")+'"><i>'+(d.n||"")+'</i>'+d.name+'</div>';}).join("")+'</div></div>';
+  var bs=buckets(ui.pv),key=ui.pm==="fin"?"fin":ui.pm==="days"?"days":"pages";
+  var mx=Math.max.apply(null,bs.map(function(b){return b[key];}).concat([1]));
+  var sum=bs.reduce(function(a,b){return a+b[key];},0);
+  var cols=bs.map(function(b){return '<div class="col'+(b.cur?" now":"")+'"><span class="v">'+b[key]+'</span><div class="b" style="height:'+Math.round(b[key]/mx*150)+'px"></div></div>';}).join("");
+  var xl=bs.map(function(b){return '<div>'+esc(b.label)+(b.cur?'<br><b>now</b>':'')+'</div>';}).join("");
+  var mname={pages:"Pages finished",fin:"Stories finished",days:"Days practiced"}[key];
+  function seg(attr,cur,items){return '<div class="seg" role="group">'+items.map(function(x){return '<button data-act="'+attr+'" data-id="'+x[0]+'" aria-pressed="'+(cur===x[0])+'">'+x[1]+'</button>';}).join("")+'</div>';}
+  var chart='<div class="card"><div class="card-head"><div><h3>'+mname+(ui.pv==="month"?", month by month":", week by week")+'</h3><p class="hint" style="margin:0">'
+    +(ui.pv==="month"?"Last 6 months":"Last 8 weeks, each starting on a Monday")+" \u2022 "+sum+" in total"+'</p></div>'
+    +'<div class="ctl">'+seg("pv",ui.pv,[["week","Weeks"],["month","Months"]])+seg("pm",key,[["pages","Pages"],["fin","Stories"],["days","Days"]])+'</div></div>'
+    +'<div class="chart" role="img" aria-label="'+esc(mname)+' chart">'+cols+'</div><div class="xl">'+xl+'</div>'
+    +(sum===0?'<p class="hint" style="margin:12px 0 0">Nothing here yet. Finish a page and it shows up in this chart.</p>':'')+'</div>';
+  var cards=sortedStories().map(function(s){
+    var o=per[s.id]||{pages:{},fin:0,total:0,last:0,aloud:0};
+    var chips=s.pages.map(function(t,i){
+      var c=o.pages[i]||0,lv=c===0?0:c===1?1:c===2?2:c<5?3:4;
+      return '<div class="pc l'+lv+'" title="'+esc(t)+'"><b>'+c+'</b><span>p'+(i+1)+'</span></div>';
+    }).join("");
+    return '<div class="card"><h3>'+esc(s.title)+'</h3><p class="hint" style="margin:0">'+esc(s.lesson||"")+'</p>'
+      +'<p style="margin:10px 0 0"><b>Finished '+o.fin+(o.fin===1?" time":" times")+'</b> \u2022 '+o.total+(o.total===1?" page":" pages")+' completed in all'
+      +(o.aloud?' \u2022 whole story read aloud '+o.aloud+(o.aloud===1?" time":" times"):"")+' \u2022 '+(o.last?"last read "+fmtDate(o.last):"not read yet")+'</p>'
+      +'<div class="pgrid">'+chips+'</div>'
+      +'<p class="hint" style="margin:10px 0 0">Each box is one page. The number is how many times it was finished. Darker means more practice. Hold or hover a box to see the sentence.</p></div>';
+  }).join("");
+  var hc={};state.log.forEach(function(e){if(e.k==="h"&&e.w)hc[e.w]=(hc[e.w]||0)+1;});
+  var top=Object.keys(hc).sort(function(a,b){return hc[b]-hc[a]||(a<b?-1:1);}).slice(0,18),hs=heartSet();
+  var helped='<div class="card"><h3>Words that needed help</h3><p class="hint">Words tapped for help while reading. Pink words are heart words.</p>'
+    +(top.length?'<div class="wordlist">'+top.map(function(w){return '<span class="hw'+(hs[w]?"":" plain")+'">'+esc(w)+'<em>'+hc[w]+'</em></span>';}).join("")+'</div>':'<p class="hint" style="margin:0">None yet. Tap any word while reading to hear it.</p>')+'</div>';
+  var clr=ui.confirmClear
+    ?'<div class="confirm"><span>Clear all progress history? Stories and heart words stay.</span><button class="btn danger" data-act="clear-yes">Clear</button><button class="btn ghost" data-act="clear-no">Keep</button></div>'
+    :'<button class="link" data-act="clear-ask">Clear progress history</button>';
+  return head+'<main class="pg"><div><h2>Practice over time</h2><p class="sub">A page counts when you tap the next arrow after it. A story counts as finished when you reach the whole-story page.</p></div>'
+    +stats+dots+chart+(allStories().length?'<h2 style="font-size:1.5rem">Page by page</h2>'+cards:'')+helped+'<div>'+clr+'</div></main>';
+}
+
+
+function viewImport(){
+  var d=ui.draft;
+  var head='<header class="bar"><div class="left"><button class="btn ghost" data-act="cancel-draft">\u2190 Cancel</button></div><h1>'+(d.id?"Edit story":"New story")+(ui.qTotal>1?" ("+ui.qIdx+" of "+ui.qTotal+")":"")+'</h1><div></div></header>';
+  if(d.step==="reading"){
+    return head+'<main class="wrap"><div class="panel reading" role="status"><div class="spin"></div><h2>Reading the page\u2026</h2><p class="sub" style="color:var(--muted)">This takes a few seconds.</p><button class="btn line" data-act="cancel-read">Stop</button></div></main>';
+  }
+  if(d.step==="capture"){
+    var noPhoto=ui.photoOk===false;
+    var drop=noPhoto
+      ?'<div class="note">Reading photos isn\u2019t available in this view, so type or paste the passage instead.</div>'
+      :'<div class="drop" id="drop"><h3>Upload a photo of the passage</h3><p>Drag a JPEG or other image file here, paste one with Ctrl+V, or pick it from your computer.</p>'
+        +'<div class="row"><button class="btn primary" data-act="choose">Upload a JPEG or image</button><button class="btn line" data-act="cam-start">Use the webcam</button></div>'
+        +(d.cam?'<div class="cam"><video id="cam" autoplay playsinline muted></video><div class="row" style="margin-top:12px"><button class="btn primary" data-act="cam-snap">Take picture</button><button class="btn line" data-act="cam-stop">Close camera</button></div></div>':"")
+        +'</div>';
+    return head+'<main class="wrap"><div class="panel"><h2 style="color:var(--surface-ink)">Make a book from a photo</h2><p style="margin:0 0 20px;color:var(--muted)">Lay the sheet flat with good light so every word is sharp.</p>'+(ui.engine==="local"?'<div class="note" style="margin:0 0 18px">This copy reads photos with a built-in text reader. It needs an internet connection and can make small mistakes, so check the text on the next screen.</div>':"")
+      +drop
+      +(d.error?'<p class="err" role="alert">'+esc(d.error)+'</p>':"")
+      +'<div class="alt"><button class="link" data-act="manual">Type or paste the passage instead</button></div></div></main>';
+  }
+  // review
+  var lines=d.pagesText.split("\n").filter(function(l){return l.trim();}).length;
+  return head+'<main class="wrap"><div class="panel"><div class="review">'
+    +'<div>'+(d.imageUrl?'<img src="'+esc(d.imageUrl)+'" alt="Photo of the passage">':'<div class="note">No photo for this story.</div>')+'</div>'
+    +'<div class="form">'
+    +'<h2 style="color:var(--surface-ink);margin:0">Check the story</h2>'
+    +'<p style="margin:0;color:var(--muted)">Fix anything that was read wrong. Each line becomes one page.</p>'
+    +'<label>Story name<input class="field" id="d-title" value="'+esc(d.title)+'"></label>'
+    +'<label>Lesson (shows at the top left of each page)<input class="field" id="d-lesson" value="'+esc(d.lesson)+'"></label>'
+    +'<div class="chars"><span>Insert:</span>'+["\u0101","\u0113","\u012B","\u014D","\u016B","\u014B","_"].map(function(c){return '<button type="button" class="btn line" data-act="ins" data-id="'+c+'" aria-label="Insert '+c+'">'+c+'</button>';}).join("")+'</div>'
+    +'<label>Lesson sound letters <small>Words with these letters get highlighted. Separate with commas, like nk or ng, ck. Use an underscore for patterns like a_e, and a dash for word endings or beginnings, like -ing or un-.</small><input class="field" id="d-pat" value="'+esc(d.patternsText)+'"></label>'
+    +'<label>Story, one sentence per line<textarea class="field" id="d-pages" spellcheck="false">'+esc(d.pagesText)+'</textarea></label>'
+    +'<div id="d-count" style="color:var(--muted)">'+lines+' pages</div>'
+    +(d.error?'<p class="err" role="alert">'+esc(d.error)+'</p>':"")
+    +'<div class="row" style="justify-content:flex-start"><button class="btn primary" data-act="save-draft">'+(ui.queue&&ui.queue.length?"Save and next \u2192":"Save story")+'</button>'+(ui.queue&&ui.queue.length?'<button class="btn line" data-act="skip-draft">Skip this one</button>':"")+'<button class="btn line" data-act="cancel-draft">'+(ui.qTotal>1?"Stop":"Cancel")+'</button></div>'
+    +'</div></div></div></main>';
+}
+
+/* ---------- heart words: the teacher manages them, students only see them ---------- */
+function hwWords(){return TEACHER?state.hw.map(function(x){return x.w;}):classHW;}
+function hwIndex(w){var n=norm(w);for(var i=0;i<state.hw.length;i++){if(norm(state.hw[i].w)===n)return i;}return -1;}
+function hwAddFromForm(){
+  var inp=document.getElementById("hw-input");if(!inp)return;
+  var mode=ui.hwMode||"off",date=ui.hwDate||"";
+  if(mode==="sched"&&dueDate(date)==null){toast("Pick a release date first");return;}
+  var words=inp.value.split(/[\s,;]+/).map(function(w){return w.trim();}).filter(Boolean);
+  if(!words.length){inp.focus();return;}
+  var added=0,dups=0;
+  words.forEach(function(w){
+    if(hwIndex(w)>=0){dups++;return;}
+    state.hw.push({w:(w==="I"||w==="i")?"I":w.toLowerCase(),released:mode==="on",releaseOn:mode==="sched"?date:""});added++;
+  });
+  if(added)persist();
+  toast(added+(added===1?" word added":" words added")+(dups?" ("+dups+" already there)":""));
+  refreshAfterWords();
+}
+function toggleHeart(w){
+  var at=hwIndex(w);
+  if(at>=0){state.hw.splice(at,1);persist();toast("Removed \u201C"+w+"\u201D");}
+  else{state.hw.push({w:(w==="I"||w==="i")?"I":w.toLowerCase(),released:false,releaseOn:""});persist();toast("Added \u201C"+w+"\u201D (hidden from students until you show it)");}
+}
+function hwEach(fn){var sel=ui.hwSel||{};state.hw.forEach(function(x){if(sel[norm(x.w)])fn(x);});}
+function hwDone(msg){ui.hwSel={};ui.hwDelAsk=false;persist();toast(msg);refreshAfterWords();}
+function hwSelect(kind){
+  ui.hwSel={};ui.hwDelAsk=false;
+  state.hw.forEach(function(x){if(kind==="all"||(kind==="off"&&relStatus(x).k==="off"))ui.hwSel[norm(x.w)]=1;});
+  renderDrawer();
+}
+function renderDrawer(){
+  if(!ui.drawer){$drawer.innerHTML="";return;}
+  var head='<div class="scrim" data-act="close-drawer"></div><aside class="drawer" role="dialog" aria-modal="true" aria-label="Heart words">'
+    +'<div class="drawer-head"><h2>\u2665 Heart words</h2><button class="btn line" data-act="close-drawer">Done</button></div>';
+  if(!TEACHER){
+    var ws=classHW.slice().sort(function(a,b){return norm(a)<norm(b)?-1:1;});
+    $drawer.innerHTML=head+'<p class="hint">Your teacher picked these words. They get a red heart in your stories. Tap a word to hear it.</p>'
+      +(ws.length
+        ?'<div class="words">'+ws.map(function(w){return '<button class="hwb" data-act="say-hw" data-w="'+esc(w)+'">'+esc(w)+'</button>';}).join("")+'</div><div class="hint">'+ws.length+(ws.length===1?" word":" words")+'</div>'
+        :'<p>Your teacher hasn\u2019t shared any heart words yet.</p>')
+      +'</aside>';
+    return;
+  }
+  var all=state.hw.slice().sort(function(a,b){return norm(a.w)<norm(b.w)?-1:1;});
+  var sel=ui.hwSel||{},nsel=0,on=0,sc=0,off=0;
+  all.forEach(function(x){if(sel[norm(x.w)])nsel++;var k=relStatus(x).k;if(k==="on")on++;else if(k==="sched")sc++;else off++;});
+  var chips=all.map(function(x){
+    var n=norm(x.w),st=relStatus(x),tag=st.k==="sched"?' <small>'+esc(fmtDate(dueDate(x.releaseOn)))+'</small>':"";
+    return '<button class="hwt st-'+st.k+(sel[n]?" sel":"")+'" data-act="hw-sel" data-w="'+esc(x.w)+'" aria-pressed="'+(sel[n]?"true":"false")+'" title="'+esc(st.t)+'">'+esc(x.w)+tag+'</button>';
+  }).join("");
+  var mode=ui.hwMode||"off",dis=nsel?"":" disabled";
+  var bar=ui.hwDelAsk
+    ?'<div class="selbar"><div><b>Delete '+nsel+(nsel===1?" word":" words")+'?</b></div><div class="ctl"><button class="btn danger" data-act="hw-del-yes">Delete</button><button class="btn line" data-act="hw-del-no">Keep</button></div></div>'
+    :'<div class="selbar"><div><b>'+nsel+' selected</b> \u2022 <button class="link" data-act="hw-all">All</button> <button class="link" data-act="hw-sel-off">Hidden ones</button> <button class="link" data-act="hw-none">None</button></div>'
+      +'<div class="ctl"><button class="btn primary" data-act="hw-show"'+dis+'>Show to students</button><button class="btn line" data-act="hw-hide"'+dis+'>Hide</button>'
+      +'<button class="btn danger" data-act="hw-del-ask"'+dis+'>Delete</button></div>'
+      +'<div class="schedset"><input type="date" class="field" id="hw-sdate" aria-label="Release date" value="'+esc(ui.hwSDate||"")+'"><button class="btn line" data-act="hw-sched"'+dis+'>Release on this date</button></div></div>';
+  $drawer.innerHTML=head
+    +'<p class="hint">You choose which heart words students can see. Add words, tap words to select them, then show, hide or schedule them. Students only see the words you show.</p>'
+    +'<div class="add-row"><input class="field" id="hw-input" placeholder="Add words (spaces or commas)" autocomplete="off" autocapitalize="off" spellcheck="false"><button class="btn primary" data-act="add-heart">Add</button></div>'
+    +'<div class="add-row hwmode"><select class="field" id="hw-mode" aria-label="New words start as"><option value="off"'+(mode==="off"?" selected":"")+'>New words start hidden</option><option value="on"'+(mode==="on"?" selected":"")+'>New words start visible</option><option value="sched"'+(mode==="sched"?" selected":"")+'>New words release on a date</option></select>'
+    +'<input type="date" class="field" id="hw-date" aria-label="Release date for new words" value="'+esc(ui.hwDate||"")+'"'+(mode==="sched"?"":" disabled")+'></div>'
+    +'<div class="hint">'+on+' visible \u2022 '+sc+' scheduled \u2022 '+off+' hidden. Solid = visible, dashed = hidden, dotted = scheduled.</div>'
+    +'<div class="words">'+(chips||'<span class="hint">No heart words yet.</span>')+'</div>'
+    +bar+'</aside>';
+}
+
+function toast(msg){
+  $toast.innerHTML='<div class="toast">'+esc(msg)+'</div>';
+  clearTimeout(toastTimer);toastTimer=setTimeout(function(){$toast.innerHTML="";},2200);
+}
+
+/* ---------- actions ---------- */
+function go(screen){ui.screen=screen;ui.dir="";render();window.scrollTo(0,0);}
+function openStory(id){
+  var s=getStory(id);if(!s)return;
+  ui.storyId=id;
+  var lp=s.lastPage||0;
+  ui.page=(lp>0&&lp<s.pages.length)?lp:0;
+  ui.edit=false;ui.dir="";ui.helpWord=null;
+  ui.run={sid:id,done:{},finished:false};
+  go("reader");
+}
+function turn(delta){
+  var s=getStory(ui.storyId);if(!s)return;
+  var n=s.pages.length;
+  var np=ui.page+delta;if(np<0||np>n)return;
+  if(delta>0&&ui.page<n&&ui.run&&!ui.run.done[ui.page]){ui.run.done[ui.page]=1;logEv("p",{p:ui.page});}
+  if(np===n&&ui.run&&!ui.run.finished){ui.run.finished=true;logEv("f");toast("You made it to the end! \u2605");}
+  stopSpeech();ui.helpWord=null;ui.page=np;ui.dir=delta>0?"anim-next":"anim-prev";s.lastPage=np;if(s.cls)state.clsPos[s.id]=np;persistSoon();render();
+}
+function voiceList(){try{return window.speechSynthesis.getVoices().filter(function(v){return /^en/i.test(v.lang);});}catch(e){return [];}}
+function voiceBar(){
+  var vs=voiceList(),cur=pickVoice(),sp=state.speed||0.65;
+  var opts=vs.length?vs.map(function(v){return '<option value="'+esc(v.name)+'"'+(cur&&cur.name===v.name?" selected":"")+'>'+esc(v.name.replace(/^Microsoft\s+/,"").replace(/\s*-\s*English.*$/,""))+'</option>';}).join(""):'<option>Default voice</option>';
+  var speeds=[[0.5,"Very slow"],[0.65,"Slow"],[0.8,"Medium"],[1,"Normal"]],best=0;
+  speeds.forEach(function(x,i){if(Math.abs(x[0]-sp)<Math.abs(speeds[best][0]-sp))best=i;});
+  var so=speeds.map(function(x,i){return '<option value="'+x[0]+'"'+(i===best?" selected":"")+'>'+x[1]+'</option>';}).join("");
+  return '<div class="voicebar"><label>Voice <select id="voiceSel">'+opts+'</select></label><label>Speed <select id="speedSel">'+so+'</select></label></div>';
+}
+var LETTER={a:"ay",b:"bee",c:"see",d:"dee",e:"ee",f:"eff",g:"jee",h:"aitch",i:"eye",j:"jay",k:"kay",l:"ell",m:"em",n:"en",o:"oh",p:"pee",q:"cue",r:"are",s:"ess",t:"tee",u:"you",v:"vee",w:"double you",x:"ex",y:"why",z:"zee"};
+function rate(){return state.speed||0.65;}
+function mkUtter(text,r){var u=new SpeechSynthesisUtterance(text);u.lang="en-US";u.rate=r||rate();u.pitch=1.1;var v=pickVoice();if(v)u.voice=v;return u;}
+function rmClass(sel,cls){var a=document.querySelectorAll(sel);for(var i=0;i<a.length;i++)a[i].classList.remove(cls);}
+function clearWords(){rmClass(".w.speaking","speaking");}
+function clearHl(){clearWords();rmClass(".sline.cur","cur");rmClass("#hbig .L.on","on");rmClass("#hbig.say","say");}
+function hlWord(words,idx){clearWords();if(idx>=0&&words[idx])words[idx].classList.add("speaking");}
+function curSentence(i){
+  rmClass(".sline.cur","cur");
+  var sl=document.querySelector('.sline[data-sl="'+i+'"]');if(!sl)return;
+  sl.classList.add("cur");
+  var box=document.getElementById("storyAll");
+  if(box){
+    var r=sl.getBoundingClientRect(),b=box.getBoundingClientRect();
+    if(r.bottom>b.bottom-8||r.top<b.top+8){try{box.scrollTo({top:box.scrollTop+(r.top-b.top)-24,behavior:"smooth"});}catch(e){box.scrollTop=box.scrollTop+(r.top-b.top)-24;}}
+  }
+}
+function stopSpeech(){speakId++;speaking=false;try{if(canSpeak)window.speechSynthesis.cancel();}catch(e){}clearHl();}
+function updateSpeakBtn(){var b=document.getElementById("speakBtn");if(!b)return;b.setAttribute("aria-pressed",String(speaking));b.textContent=speakLabel();}
+
+/* Reads one sentence and highlights each word as it is spoken.
+   Uses the voice's word-boundary events when the browser provides them,
+   and falls back to timed highlighting when it does not. */
+function readSentence(text,sx,my,done){
+  var words=[].slice.call(document.querySelectorAll('.w[data-sx="'+sx+'"]'));
+  var u=mkUtter(text),gotB=false,fb=null,i=0;
+  function stepFb(){
+    if(my!==speakId||gotB)return;
+    hlWord(words,i);
+    if(i>=words.length)return;
+    var w=words[i],en=+w.getAttribute("data-en"),after=text.charAt(en)||"",after2=text.charAt(en+1)||"";
+    var ms=(w.textContent.length*70+90)/rate();
+    if(/[,;:]/.test(after))ms+=250/rate();
+    else if(/[.!?]/.test(after)||/[.!?]/.test(after2))ms+=350/rate();
+    i++;fb=setTimeout(stepFb,ms);
+  }
+  u.onstart=function(){if(my===speakId&&!gotB)stepFb();};
+  u.onboundary=function(e){
+    if(my!==speakId)return;
+    if(e.name&&e.name!=="word")return;
+    gotB=true;clearTimeout(fb);
+    var k=-1;
+    for(var j=0;j<words.length;j++){if(e.charIndex<+words[j].getAttribute("data-en")){k=j;break;}}
+    hlWord(words,k);
+  };
+  u.onend=function(){clearTimeout(fb);if(my===speakId)done(false);};
+  u.onerror=function(){clearTimeout(fb);if(my===speakId)done(true);};
+  window.speechSynthesis.speak(u);
+}
+function readStory(s,i,my){
+  if(my!==speakId)return;
+  if(i>=s.pages.length){speaking=false;clearHl();updateSpeakBtn();logEv("a");return;}
+  curSentence(i);
+  readSentence(s.pages[i],i,my,function(err){
+    if(my!==speakId)return;
+    clearWords();
+    if(err){speaking=false;clearHl();updateSpeakBtn();return;}
+    setTimeout(function(){readStory(s,i+1,my);},Math.round(650/rate()));
+  });
+}
+
+/* ---------- tap a word for help ---------- */
+function helpHtml(word){
+  var s=getStory(ui.storyId),n=norm(word),low=word.toLowerCase(),hs=heartSet(),cls="",tip;
+  var pats=((s&&s.patterns)||[]).filter(Boolean);
+  var hit=pats.filter(function(p){return patRanges(low,p);})[0];
+  if(hs[n]){cls=" heart";tip="\u2665 This is a heart word. Part of it doesn\u2019t sound the way it looks, so we learn it by heart.";}
+  else if(hit){cls=" lesson";tip="Look for the <mark>"+esc(patLabel(hit))+"</mark> sound in this word. Say each part, then blend the sounds together.";}
+  else tip="Look at each letter, say its sound, then blend the sounds together.";
+  var letters=word.split("").map(function(ch){return /[A-Za-z]/.test(ch)?'<span class="L">'+esc(ch)+'</span>':esc(ch);}).join("");
+  return '<div class="helpcard"><span class="hw-big'+cls+'" id="hbig">'+letters+'</span><div class="tip">'+tip+'</div>'
+    +(canSpeak?'<button class="speak sm" data-act="say-word">\uD83D\uDD0A Hear it</button><button class="speak sm alt" data-act="spell-word">Spell it</button>':"")
+    +'<button class="speak sm alt" data-act="close-help" aria-label="Close word help">\u00D7</button></div>';
+}
+function wordHelp(word,el){
+  stopSpeech();updateSpeakBtn();
+  rmClass(".w.picked","picked");
+  el.classList.add("picked");
+  ui.helpWord=word;
+  logEv("h",{w:norm(word)});
+  var hc=document.getElementById("helpCard");if(hc)hc.innerHTML=helpHtml(word);
+  sayWord(word);
+}
+function closeHelp(){
+  stopSpeech();updateSpeakBtn();ui.helpWord=null;
+  rmClass(".w.picked","picked");
+  var hc=document.getElementById("helpCard");if(hc)hc.innerHTML="";
+}
+function sayWord(word){
+  if(!canSpeak||!word)return;
+  stopSpeech();updateSpeakBtn();
+  var my=speakId;
+  setTimeout(function(){
+    if(my!==speakId)return;
+    var big=document.getElementById("hbig");if(big)big.classList.add("say");
+    var u=mkUtter(word,Math.max(0.45,rate()*0.8));
+    u.onend=u.onerror=function(){if(big)big.classList.remove("say");};
+    window.speechSynthesis.speak(u);
+  },60);
+}
+function spellWord(word){
+  if(!canSpeak||!word)return;
+  stopSpeech();updateSpeakBtn();
+  var my=speakId;
+  var ls=[].slice.call(document.querySelectorAll("#hbig .L"));
+  var names=ls.map(function(el){return LETTER[el.textContent.toLowerCase()]||el.textContent;});
+  function step(i){
+    if(my!==speakId)return;
+    for(var k=0;k<ls.length;k++)ls[k].classList.remove("on");
+    var big=document.getElementById("hbig");
+    if(i>=ls.length){
+      if(big)big.classList.add("say");
+      var u2=mkUtter(word,Math.max(0.45,rate()*0.8));
+      u2.onend=u2.onerror=function(){if(big)big.classList.remove("say");};
+      window.speechSynthesis.speak(u2);
+      return;
+    }
+    ls[i].classList.add("on");
+    var u=mkUtter(names[i],0.8);
+    u.onend=u.onerror=function(){setTimeout(function(){step(i+1);},350);};
+    window.speechSynthesis.speak(u);
+  }
+  setTimeout(function(){step(0);},60);
+}
+function pickVoice(){
+  try{
+    var vs=window.speechSynthesis.getVoices().filter(function(v){return /^en/i.test(v.lang);});
+    var chosen=state.voice?vs.filter(function(v){return v.name===state.voice;})[0]:null;if(chosen)return chosen;
+    var rank=[/\bana\b/i,/jenny|aria|ava\b|samantha|kathy|junior/i,/natural|online|google us/i];
+    for(var r=0;r<rank.length;r++){var f=vs.filter(function(v){return rank[r].test(v.name);})[0];if(f)return f;}
+    var pref=null;
+    return pref||vs.filter(function(v){return /en[-_]US/i.test(v.lang);})[0]||vs[0]||null;
+  }catch(e){return null;}
+}
+function speak(){
+  if(!canSpeak){toast("Reading aloud isn\u2019t supported in this browser");return;}
+  var s=getStory(ui.storyId);if(!s)return;
+  if(speaking){stopSpeech();updateSpeakBtn();return;}
+  stopSpeech();
+  var my=speakId;
+  speaking=true;updateSpeakBtn();
+  setTimeout(function(){
+    if(my!==speakId)return;
+    if(ui.page<s.pages.length){
+      readSentence(s.pages[ui.page],ui.page,my,function(){speaking=false;clearHl();updateSpeakBtn();});
+    }else readStory(s,0,my);
+  },60);
+}
+/* ---------- import flow ---------- */
+function newDraft(){return {id:null,step:"capture",title:"",lesson:"",patternsText:"",pagesText:"",imageUrl:"",error:"",cam:false};}
+function startNew(){ui.draft=newDraft();ui.queue=[];ui.qTotal=0;ui.qIdx=0;go("import");checkPhoto();}
+function startEdit(id){
+  var s=getStory(id);if(!s)return;
+  ui.draft={id:s.id,step:"review",title:s.title,lesson:s.lesson||"",patternsText:(s.patterns||[]).map(patLabel).join(", "),pagesText:s.pages.join("\n"),imageUrl:"",error:"",cam:false};
+  go("import");
+}
+async function checkPhoto(){
+  var sample=await useCap("sample");
+  ui.engine="local";ui.photoOk=true;
+  if(sample){try{var lim=await sample.limits();if(lim&&lim.images)ui.engine="claude";}catch(e){}}
+  if(ui.screen==="import"&&ui.draft&&ui.draft.step==="capture")render();
+}
+function stopCamera(){if(camStream){camStream.getTracks().forEach(function(t){t.stop();});camStream=null;}}
+async function startCamera(){
+  var d=ui.draft;
+  try{
+    camStream=await navigator.mediaDevices.getUserMedia({video:{width:{ideal:1920},height:{ideal:1080}}});
+    d.cam=true;d.error="";render();
+    var v=document.getElementById("cam");if(v)v.srcObject=camStream;
+  }catch(e){stopCamera();d.cam=false;d.error="The camera isn\u2019t available here. Use \u201CUpload a JPEG or image\u201D instead.";render();}
+}
+function snapCamera(){
+  var v=document.getElementById("cam");if(!v||!v.videoWidth)return;
+  var c=document.createElement("canvas");c.width=v.videoWidth;c.height=v.videoHeight;c.getContext("2d").drawImage(v,0,0);
+  stopCamera();ui.draft.cam=false;
+  c.toBlob(function(b){if(b)processBlob(b);},"image/jpeg",0.9);
+}
+async function prepImage(file){
+  var bmp=null;
+  try{bmp=await createImageBitmap(file);}catch(e){}
+  if(!bmp){
+    bmp=await new Promise(function(res,rej){var im=new Image();im.onload=function(){res(im);};im.onerror=rej;im.src=URL.createObjectURL(file);});
+  }
+  var w=bmp.width||bmp.naturalWidth,h=bmp.height||bmp.naturalHeight;
+  var sc=Math.min(1,1800/Math.max(w,h));
+  var c=document.createElement("canvas");c.width=Math.round(w*sc);c.height=Math.round(h*sc);
+  c.getContext("2d").drawImage(bmp,0,0,c.width,c.height);
+  return await new Promise(function(res){c.toBlob(res,"image/jpeg",0.86);});
+}
+var PROMPT=[
+ "This is a photo of a children\u2019s phonics reading passage from school (UFLI Foundations style). Read the page and return ONLY JSON in exactly this shape:",
+ "{\"title\": \"...\", \"lesson\": \"...\", \"patterns\": [\"...\"], \"sentences\": [\"...\", \"...\"]}",
+ "Rules:",
+ "- title: the story title: the bold, centered heading between the lesson line and the \u201CIllustrate the story here\u201D box. Copy it exactly with its capital letters.",
+ "- lesson: the lesson label at the very top left of the page (it often has a highlighter mark), copied exactly, starting with the word Lesson and including the number, the sound in slashes, and the (as in ...) part, for example: Lesson 52: n /\u014B/ (as in nk). Keep special characters exactly as printed, such as the long-vowel marks in /\u0101/ /\u012B/ and the \u014B symbol. Do not include the logo text.",
+ "- patterns: the letter pattern or patterns the lesson teaches, lowercase, taken from the lesson label (for \u201Cas in nk\u201D return [\"nk\"]). Return [] if you can\u2019t tell.",
+ "- sentences: the story text in reading order, one sentence per item. Keep quoted speech together with its speaker tag in the same item (for example: \u201CWhat is that smell?\u201D Hank thinks.). Use the exact spelling and the curly quotation marks as printed. Do not fix or reword anything.",
+ "- Leave out the title, the \u201CIllustrate the story here\u201D box, logos, page numbers and the copyright line.",
+ "- Ignore yellow highlighter marks, circles and any handwriting."
+].join("\n");
+
+async function processBlob(blob){
+  var d=ui.draft;
+  d.error="";d.step="reading";
+  if(d.imageUrl)URL.revokeObjectURL(d.imageUrl);
+  d.imageUrl=URL.createObjectURL(blob);
+  render();
+  ctl=new AbortController();
+  var mine=ctl;
+  try{
+    var sample=await useCap("sample");
+    var data;if(!sample){data=await ocrLocal(blob,mine.signal);}
+    
+    else{data=await sample.json(PROMPT,{images:[blob],signal:mine.signal,modelTier:"default",cache:false});}
+    if(mine.signal.aborted)return;
+    var sentences=Array.isArray(data.sentences)?data.sentences.map(function(x){return String(x).trim();}).filter(Boolean):[];
+    if(!sentences.length&&data.text)sentences=splitSentences(data.text);
+    if(!sentences.length)throw {code:"empty"};
+    var lesson=fixSounds(String(data.lesson||"").trim());
+    var pats=Array.isArray(data.patterns)?data.patterns.map(function(p){return normPat(p);}).filter(Boolean):[];
+    if(!pats.length)pats=derivePatterns(lesson);
+    d.title=String(data.title||"").trim();d.lesson=lesson;d.patternsText=pats.join(", ");d.pagesText=sentences.join("\n");
+    d.step="review";d.error="";
+    render();
+  }catch(e){
+    if(mine.signal.aborted||(e&&e.code==="cancelled"))return;
+    var msg={
+      not_granted:"Claude wasn\u2019t allowed to read the photo. Choose the photo again and allow it, or type the passage in.",
+      rate_limited:"Too many requests at once. Wait a moment and try again.",
+      images_unavailable:"Reading photos isn\u2019t available here. Type or paste the passage instead.",
+      image_rejected:"That photo couldn\u2019t be used. Try a clearer, smaller photo (JPG or PNG).",
+      ocr_failed:"The built-in text reader couldn\u2019t start. It needs an internet connection the first time. Check your connection, or type the passage in.",
+      empty:"No story text was found in that photo. Try again with the whole page in view."
+    }[e&&e.code]||"The page couldn\u2019t be read. Try the photo again, or type the passage in.";
+    d.step="capture";d.error=msg;render();
+  }
+}
+function loadScript(src){return new Promise(function(res,rej){var s=document.createElement("script");s.src=src;s.onload=res;s.onerror=function(){rej(new Error("load"));};document.head.appendChild(s);});}
+function curly(t){return t.replace(/(^|[\s(\[\u2014-])"/g,"$1\u201C").replace(/"/g,"\u201D").replace(/(\w)'(\w)/g,"$1\u2019$2").replace(/\u201C\s+/g,"\u201C").replace(/\s+\u201D/g,"\u201D");}
+/* common photo-reader slips: a lone l or | for I, and "info" for "into" */
+function fixOcr(s){return String(s).replace(/(^|[\s\u201C"(])[l|](?=[\s,.!?\u201D"])/g,"$1I").replace(/\binfo\b/g,"into");}
+/* Finds the lesson label (top left) and the bold centered title in the header lines of a worksheet. */
+function cleanLesson(l){
+  var m=/lesson\s*[:.#-]?\s*\d+.*/i.exec(String(l||""));
+  var t=m?m[0]:String(l||"");
+  t=t.replace(/\s+(ufli|foundations)\b.*$/i,"").replace(/\s+/g," ").trim();
+  return t.replace(/^lesson\s*[:.#-]?\s*(\d+)/i,"Lesson $1").replace(/^(Lesson \d+[a-z]?)\s+(?=[^:\s])/,"$1: ").replace(/^(Lesson \d+[a-z]?)\s*[:.-]\s*/,"$1: ");
+}
+function cleanTitle(l){
+  return String(l||"").replace(/^[^A-Za-z0-9\u201C"']+/,"").replace(/[^A-Za-z0-9!?\u201D"']+$/,"").replace(/\s+/g," ").trim();
+}
+/* Photo readers often turn long-vowel marks into plain letters (/a/ instead of /ā/). For split patterns like a_e the
+   sound is known, so put the macron back. Also restores the ng sound symbol in "n /ŋ/ (as in nk)" lessons. */
+var MACRON={a:"\u0101",e:"\u0113",i:"\u012B",o:"\u014D",u:"\u016B"};
+function fixSounds(l){
+  var t=String(l||"");
+  try{t=t.normalize("NFC");}catch(e){}
+  t=t.replace(/\b([aeiou])_e(\s*)\/\s*([^\/]{1,3}?)\s*\//gi,function(m,v,sp,snd){
+    var base=snd;try{base=snd.normalize("NFD").replace(/[\u0300-\u036f]/g,"");}catch(e){}
+    if(base.toLowerCase()===v.toLowerCase())return v.toLowerCase()+"_e"+sp+"/"+MACRON[v.toLowerCase()]+"/";
+    return m;
+  });
+  t=t.replace(/(\bn\s*)\/\s*[yYnN\u03B7uj]\s*\/(\s*\(\s*as\s+in\s+n[gk])/i,"$1/\u014B/$2");
+  var keep=/^(Lesson\s*\d+[a-z]?\s*:\s*[^\/]*?(?:\s*\/[^\/]{1,4}\/)+(?:\s*\(\s*as\s+in\s+[^)]*\))?)/i.exec(t);
+  if(keep)t=keep[1];
+  return t;
+}
+function parseHeader(lines){
+  var lesson="",title="",li=-1,i;
+  for(i=0;i<Math.min(lines.length,10);i++){
+    if(/lesson\s*[:.#-]?\s*\d+/i.test(lines[i])){lesson=cleanLesson(lines[i]);li=i;break;}
+  }
+  var cands=[];
+  for(i=li+1;i<lines.length;i++){
+    var l=lines[i];
+    if(/ufli|foundations|lesson\s*\d|\u00A9|copyright/i.test(l))continue;
+    var c=cleanTitle(l);
+    if(c.length<2||c.length>60||c.split(" ").length>9)continue;
+    cands.push(c);
+  }
+  title=cands.filter(function(c){return !/[.,]$/.test(c);})[0]||cands[0]||"";
+  return {lesson:fixSounds(lesson),title:title};
+}
+async function ocrLocal(blob,signal){
+  var text="";
+  try{
+    if(!window.Tesseract)await loadScript("https://cdnjs.cloudflare.com/ajax/libs/tesseract.js/5.1.1/tesseract.min.js");
+    var worker=await window.Tesseract.createWorker("eng");
+    try{var r=await worker.recognize(blob);text=(r.data&&r.data.text)||"";}finally{await worker.terminate();}
+  }catch(e){throw {code:"ocr_failed"};}
+  if(signal&&signal.aborted)throw {code:"cancelled"};
+  var lines=text.split(/\r?\n/).map(function(l){return l.trim();}).filter(Boolean);
+  var idx=-1;
+  lines.forEach(function(l,i){if(idx<0&&/[il1|]{1,3}lustrate|story\s+here/i.test(l))idx=i;});
+  var head=idx>=0?lines.slice(0,idx):lines.slice(0,6);
+  var rest=idx>=0?lines.slice(idx+1):lines.slice(6);
+  var hd=parseHeader(head);
+  var body=rest.filter(function(l){return !/ufli|\u00A9|copyright|university of florida/i.test(l);});
+  return {title:hd.title,lesson:hd.lesson,patterns:derivePatterns(hd.lesson),sentences:splitSentences(curly(fixOcr(body.join(" "))))};
+}
+async function handleFile(file){
+  if(!file)return;
+  var d=ui.draft;if(!d)return;
+  d.error="";
+  try{var blob=await prepImage(file);await processBlob(blob);}
+  catch(e){d.step="capture";d.error="That file couldn\u2019t be opened. Use a JPEG or PNG image (iPhone HEIC photos need to be saved as JPEG first).";render();}
+}
+function saveDraft(){
+  var d=ui.draft;
+  var title=document.getElementById("d-title").value.trim();
+  var lesson=document.getElementById("d-lesson").value.trim();
+  var pat=parsePatterns(document.getElementById("d-pat").value);
+  if(!pat.length)pat=derivePatterns(lesson);
+  var pages=document.getElementById("d-pages").value.split("\n").map(function(l){return l.trim();}).filter(Boolean);
+  if(pages.length===1&&pages[0].split(/[.!?]+[\u201D"]?\s/).length>1)pages=splitSentences(pages[0]);
+  if(!pages.length){d.title=title;d.lesson=lesson;d.patternsText=pat.join(", ");d.error="Add at least one sentence before saving.";render();return;}
+  if(!title)title="Untitled story";
+  if(d.id){
+    var s=getStory(d.id);s.title=title;s.lesson=lesson;s.patterns=pat;s.pages=pages;s.lastPage=Math.min(s.lastPage||0,pages.length-1);
+  }else{
+    state.stories.unshift({id:uid(),title:title,lesson:lesson,patterns:pat,pages:pages,createdAt:Date.now(),lastPage:0,released:false,releaseOn:""});
+  }
+  persist();
+  if(d.imageUrl)URL.revokeObjectURL(d.imageUrl);
+  stopCamera();
+  toast("Saved \u201C"+title+"\u201D");
+  if(ui.queue&&ui.queue.length){ui.draft=newDraft();nextInQueue();return;}
+  ui.draft=null;ui.queue=[];ui.qTotal=0;ui.qIdx=0;
+  go("library");
+}
+function leaveImport(){
+  if(ctl){ctl.abort();}
+  stopCamera();
+  if(ui.draft&&ui.draft.imageUrl)URL.revokeObjectURL(ui.draft.imageUrl);
+  ui.draft=null;ui.queue=[];ui.qTotal=0;ui.qIdx=0;go("library");
+}
+
+/* ---------- central release control (the server keeps the master copy) ---------- */
+var API="/.netlify/functions/pbp";
+var sync={mode:"local",status:"saved",rev:0,lastStr:"",timer:null,busy:false,pending:false};
+function masterOut(){return {lessons:state.stories.map(lessonOut),heartWords:state.hw.map(hwOut)};}
+function getKey(){try{return sessionStorage.getItem("pbp.key")||"";}catch(e){return "";}}
+function setKey(k){try{if(k)sessionStorage.setItem("pbp.key",k);else sessionStorage.removeItem("pbp.key");}catch(e){}}
+async function api(op,body,key){
+  var r=await fetch(API+"?op="+op,{method:"POST",headers:{"content-type":"application/json","x-teacher-key":key||""},body:JSON.stringify(body||{}),cache:"no-store"});
+  var j=null;try{j=await r.json();}catch(e){}
+  return {status:r.status,data:j};
+}
+function syncLabel(){
+  if(sync.mode!=="connected")return "Server not connected: changes stay in this browser only";
+  return {saved:"\u2713 Saved to the server",saving:"Saving\u2026",unsaved:"Unsaved changes\u2026",offline:"Offline. Will keep trying\u2026"}[sync.status]||"";
+}
+function setSync(mode,status){
+  sync.mode=mode;sync.status=status;
+  var el=document.getElementById("syncst");
+  if(el){el.textContent=syncLabel();el.className="syncst"+(status==="offline"?" bad":"");}
+}
+function adoptMaster(m){
+  var pos={};state.stories.forEach(function(s){pos[s.id]=s.lastPage||0;});
+  state.stories=(m.lessons||[]).map(function(l){
+    return {id:l.id,title:l.title,lesson:l.lesson||"",patterns:l.patterns||[],pages:l.pages,createdAt:l.createdAt||0,
+      lastPage:Math.min(pos[l.id]||0,Math.max(0,l.pages.length-1)),released:l.released===true,releaseOn:l.releaseOn||""};
+  });
+  state.hw=(m.heartWords||[]).map(function(h){return {w:h.w,released:h.released===true,releaseOn:h.releaseOn||""};});
+  sync.rev=m.rev||0;sync.lastStr=JSON.stringify(masterOut());saveLocal();
+}
+function connected(m){
+  var serverEmpty=!(m.lessons&&m.lessons.length)&&!(m.heartWords&&m.heartWords.length);
+  sync.rev=m.rev||0;ui.screen="library";
+  if(serverEmpty&&(state.stories.length||state.hw.length)){
+    /* first time: the server has nothing yet, so send up what this browser already has */
+    sync.lastStr="";setSync("connected","unsaved");render();syncNow();return;
+  }
+  adoptMaster(m);setSync("connected","saved");render();
+}
+async function initTeacher(){
+  if(!TEACHER)return;
+  var key=getKey(),r=null;
+  try{r=await api("load",{},key);}catch(e){r=null;}
+  if(!r||r.status===404||r.status===405||(r.status>=500&&r.status!==503)){sync.mode="local";ui.screen="library";render();return;}
+  if(r.status===503){ui.signin={busy:false,need:false,msg:"The server is running, but it has no teacher passcode yet. In Netlify, add an environment variable named TEACHER_PASSCODE, then deploy again."};ui.screen="signin";render();return;}
+  if(r.status===401){setKey("");ui.signin={busy:false,need:true,error:key?"That passcode didn\u2019t work.":""};ui.screen="signin";render();return;}
+  if(r.status===200&&r.data&&Array.isArray(r.data.lessons)){connected(r.data);return;}
+  sync.mode="local";ui.screen="library";render();
+}
+async function doSignin(){
+  var pw=(document.getElementById("pw")||{}).value||"";if(!pw)return;
+  ui.signin={busy:true};render();
+  var r=null;try{r=await api("load",{},pw);}catch(e){r=null;}
+  if(r&&r.status===200&&r.data&&Array.isArray(r.data.lessons)){setKey(pw);connected(r.data);return;}
+  ui.signin={busy:false,need:true,error:(r&&r.status===401)?"That passcode didn\u2019t work.":"Couldn\u2019t reach the server. Try again."};
+  render();
+}
+function syncSoon(){
+  if(sync.mode!=="connected")return;
+  if(JSON.stringify(masterOut())===sync.lastStr)return;
+  sync.pending=true;setSync("connected","unsaved");
+  clearTimeout(sync.timer);sync.timer=setTimeout(syncNow,900);
+}
+async function syncNow(){
+  if(sync.mode!=="connected"||sync.busy)return;
+  var m=masterOut(),s=JSON.stringify(m);
+  if(s===sync.lastStr){sync.pending=false;setSync("connected","saved");return;}
+  sync.busy=true;setSync("connected","saving");
+  var r=null;
+  try{r=await api("save",{baseRev:sync.rev,lessons:m.lessons,heartWords:m.heartWords},getKey());}catch(e){r=null;}
+  sync.busy=false;
+  if(r&&r.status===200&&r.data){
+    sync.rev=r.data.rev;sync.lastStr=s;
+    if(JSON.stringify(masterOut())!==s)syncSoon();else{sync.pending=false;setSync("connected","saved");}
+    return;
+  }
+  if(r&&r.status===409&&r.data&&r.data.master){
+    adoptMaster(r.data.master);sync.pending=false;setSync("connected","saved");render();
+    toast("Another device changed the lessons first, so this screen was refreshed. Please redo your last change.");
+    return;
+  }
+  if(r&&r.status===401){setKey("");sync.mode="local";ui.signin={busy:false,need:true,error:"Please sign in again."};ui.screen="signin";render();return;}
+  setSync("connected","offline");clearTimeout(sync.timer);sync.timer=setTimeout(syncNow,10000);
+}
+function viewSignin(){
+  var s=ui.signin||{};
+  var head='<header class="bar"><div class="left"><span class="brand">Page by Page <small class="tbadge">Teacher mode</small></span></div><div></div><div class="right"><button class="btn ghost" data-act="exit-teacher">Exit teacher mode</button></div></header>';
+  if(s.busy)return head+'<main class="wrap"><div class="panel reading" role="status"><div class="spin"></div><h2 style="color:var(--surface-ink)">Connecting\u2026</h2></div></main>';
+  if(s.need===false)return head+'<main class="wrap"><div class="panel" style="max-width:560px;margin:0 auto"><h2 style="color:var(--surface-ink)">Almost there</h2><p style="color:var(--muted)">'+esc(s.msg||"")+'</p><div class="row" style="justify-content:flex-start"><button class="btn primary" data-act="signin-retry">Try again</button></div></div></main>';
+  return head+'<main class="wrap"><div class="panel" style="max-width:520px;margin:0 auto"><h2 style="color:var(--surface-ink)">Teacher sign-in</h2>'
+    +'<p style="margin:0 0 16px;color:var(--muted)">Enter the teacher passcode to manage lessons and heart words.</p>'
+    +'<div class="form"><label>Passcode<input class="field" id="pw" type="password" autocomplete="current-password" autofocus></label></div>'
+    +(s.error?'<p class="err" role="alert">'+esc(s.error)+'</p>':"")
+    +'<div class="row" style="justify-content:flex-start;margin-top:16px"><button class="btn primary" data-act="signin">Sign in</button></div></div></main>';
+}
+
+/* ---------- class catalog (lessons.json) + teacher mode ---------- */
+function allStories(){return state.stories.concat(classStories);}
+function dueDate(x){var m=/^(\d{4})-(\d{2})-(\d{2})$/.exec(String(x||"").trim());return m?new Date(+m[1],+m[2]-1,+m[3]).getTime():null;}
+function relStatus(s){
+  if(s.released===true)return {k:"on",t:"Visible to students"};
+  var d=dueDate(s.releaseOn);
+  if(d!=null)return Date.now()>=d?{k:"on",t:"Visible (release date passed)"}:{k:"sched",t:"Scheduled for "+fmtDate(d)};
+  return {k:"off",t:"Hidden from students"};
+}
+function relControls(s){
+  var st=relStatus(s);
+  return '<div class="rel '+st.k+'">'
+    +'<label class="relchk"><input type="checkbox" data-rel="'+esc(s.id)+'"'+(s.released===true?" checked":"")+'> Release now</label>'
+    +'<label class="reldate">or release on <input type="date" data-reldate="'+esc(s.id)+'" value="'+esc(s.releaseOn||"")+'"></label>'
+    +'<div class="relst">'+esc(st.t)+'</div></div>';
+}
+function setRel(id,patch){var s=getStory(id);if(!s)return;for(var q in patch)s[q]=patch[q];persist();keepScroll();}
+function teacherBar(){
+  var on=0,sc=0,off=0;
+  state.stories.forEach(function(s){var k=relStatus(s).k;if(k==="on")on++;else if(k==="sched")sc++;else off++;});
+  var conn=sync.mode==="connected";
+  var btns=(conn?'':'<button class="btn primary" data-act="export-public">\u2B07 Download lessons.json</button>')
+    +'<button class="btn ghost" data-act="load-starter">Load starter lessons</button>'
+    +'<button class="btn ghost" data-act="export-backup">Save backup</button>'
+    +'<button class="btn ghost" data-act="load-json">Load file\u2026</button>'
+    +'<button class="btn ghost" data-act="exit-teacher">'+(conn?"Sign out":"Exit teacher mode")+'</button>';
+  var note=conn
+    ?'Everything you change here is saved to the server automatically. Students pick it up within a minute or two. Hidden lessons and words are never sent to students, and scheduled ones appear on their date without any action from you. Save a backup now and then.'
+    :'The server isn\u2019t connected, so this works the old way: set what students can see, download lessons.json, and upload it next to the app. Hidden lessons and words are left out of the file. Your lessons live in this browser, so save a backup now and then.';
+  return '<div class="tbar"><div><b>Teacher mode</b> \u2022 '+on+' visible \u2022 '+sc+' scheduled \u2022 '+off+' hidden <span class="syncst'+(sync.status==="offline"?" bad":"")+'" id="syncst">'+esc(syncLabel())+'</span></div>'
+    +'<div class="ctl">'+btns+'</div>'
+    +'<div class="relpoint"><label for="rel-upto">Show lessons up to number</label><input class="field" id="rel-upto" type="number" min="0" max="200" style="width:6em;padding:.35em .6em" value="'+esc(ui.relUpto||"")+'"><span>and hide the rest</span><button class="btn ghost" data-act="rel-upto">Apply</button></div>'
+    +'<p class="tnote">'+note+'</p></div>';
+}
+function relUpto(){
+  var el=document.getElementById("rel-upto"),N=parseInt(el&&el.value,10);
+  if(isNaN(N)||N<0){toast("Type a lesson number first");return;}
+  ui.relUpto=String(N);
+  var cnt=0;
+  state.stories.forEach(function(s){var n=lessonNum(s);if(n<0)return;s.released=n<=N;s.releaseOn="";if(s.released)cnt++;});
+  persist();keepScroll();
+  toast(cnt+(cnt===1?" lesson is":" lessons are")+" now visible");
+}
+function download(name,obj){
+  var b=new Blob([JSON.stringify(obj,null,2)],{type:"application/json"});
+  var a=document.createElement("a");a.href=URL.createObjectURL(b);a.download=name;
+  document.body.appendChild(a);a.click();
+  setTimeout(function(){URL.revokeObjectURL(a.href);a.remove();},500);
+}
+function lessonOut(s){return {id:s.id,title:s.title,lesson:s.lesson||"",patterns:s.patterns||[],pages:s.pages,released:s.released===true,releaseOn:s.releaseOn||"",createdAt:s.createdAt||0};}
+function hwOut(x){return {w:x.w,released:x.released===true,releaseOn:x.releaseOn||""};}
+function exportPublic(){
+  var list=state.stories.filter(function(s){return relStatus(s).k!=="off";}).map(lessonOut);
+  var hws=state.hw.filter(function(x){return relStatus(x).k!=="off";}).map(hwOut);
+  if(!list.length&&!hws.length){toast("Nothing is released or scheduled yet");return;}
+  download("lessons.json",{v:2,updated:new Date().toISOString(),heartWords:hws,lessons:list});
+  toast(list.length+(list.length===1?" lesson":" lessons")+" and "+hws.length+(hws.length===1?" word":" words")+" in lessons.json");
+}
+function exportBackup(){
+  var d=new Date(),ds=d.getFullYear()+"-"+("0"+(d.getMonth()+1)).slice(-2)+"-"+("0"+d.getDate()).slice(-2);
+  download("page-by-page-backup-"+ds+".json",{v:2,updated:d.toISOString(),heartWords:state.hw.map(hwOut),lessons:state.stories.map(lessonOut)});
+  toast("Backup saved");
+}
+function importJson(text,opts){
+  opts=opts||{};
+  var data;try{data=JSON.parse(text);}catch(e){toast("That file isn\u2019t a lesson file");return;}
+  var items=Array.isArray(data.lessons)?data.lessons:Array.isArray(data.stories)?data.stories:null;
+  if(!items){toast("No lessons found in that file");return;}
+  var added=0,replaced=0,skipped=0;
+  items.forEach(function(l){
+    if(!l||!Array.isArray(l.pages)||!l.pages.length)return;
+    var story={id:String(l.id||uid()),title:String(l.title||"Untitled story"),lesson:String(l.lesson||""),patterns:Array.isArray(l.patterns)?l.patterns:[],
+      pages:l.pages.map(function(p){return String(p);}),createdAt:l.createdAt||Date.now(),lastPage:0,released:l.released===true,releaseOn:String(l.releaseOn||"")};
+    var at=-1;state.stories.forEach(function(x,i){if(x.id===story.id)at=i;});
+    if(at>=0){
+      if(opts.skipExisting){skipped++;return;}
+      story.lastPage=state.stories[at].lastPage||0;state.stories[at]=story;replaced++;
+    }else{state.stories.push(story);added++;}
+  });
+  var wAdded=0;
+  (Array.isArray(data.heartWords)?data.heartWords:[]).forEach(function(h){
+    var o=typeof h==="string"?{w:h,released:false,releaseOn:""}:h;
+    if(!o||!o.w)return;
+    var w=String(o.w).trim();if(!norm(w))return;
+    var obj={w:(w==="I"||w==="i")?"I":w.toLowerCase(),released:o.released===true,releaseOn:String(o.releaseOn||"")};
+    var at=hwIndex(w);
+    if(at>=0){if(!opts.skipExisting)state.hw[at]=obj;}else{state.hw.push(obj);wAdded++;}
+  });
+  persist();render();
+  toast(added+" lessons added"+(replaced?", "+replaced+" updated":"")+(skipped?", "+skipped+" already there":"")+(wAdded?", "+wAdded+" heart words":""));
+}
+async function loadStarter(){
+  var txt=null;
+  try{var r=await fetch("starter-lessons.json?t="+Date.now(),{cache:"no-store"});if(r.ok)txt=await r.text();}catch(e){txt=null;}
+  if(!txt){toast("Couldn\u2019t find starter-lessons.json. Upload it next to the app, or use Load file\u2026");return;}
+  importJson(txt,{skipExisting:true});
+}
+$json.addEventListener("change",function(){
+  var f=$json.files&&$json.files[0];if(!f)return;
+  var r=new FileReader();r.onload=function(){importJson(String(r.result||""));};r.readAsText(f);
+});
+
+/* students: read lessons.json from the site, keep a copy for offline, show only released lessons */
+function applyCatalog(data){
+  var list=(Array.isArray(data.lessons)?data.lessons:[]).filter(function(l){return l&&l.id&&Array.isArray(l.pages)&&l.pages.length&&relStatus(l).k==="on";});
+  classStories=list.map(function(l){
+    var s=clone(l);s.cls=true;s.patterns=s.patterns||[];s.lastPage=(state.clsPos&&state.clsPos[s.id])||0;s.createdAt=l.createdAt||0;return s;
+  });
+  classHW=[];var seen={};
+  (Array.isArray(data.heartWords)?data.heartWords:[]).forEach(function(h){
+    var o=typeof h==="string"?{w:h,released:true}:h;
+    if(!o||!o.w||relStatus(o).k!=="on")return;
+    var n=norm(o.w);if(seen[n])return;seen[n]=1;classHW.push(String(o.w));
+  });
+  if(ui.screen==="library")render();else if(ui.screen==="reader"&&!getStory(ui.storyId))render();
+  renderDrawer();
+}
+/* students: ask the server first, then a lessons.json file next to the app, then the copy saved on this device */
+async function fetchCatalog(){
+  try{
+    var r=await fetch(API+"?op=catalog",{cache:"no-store"});
+    if(r.ok){var d=await r.json();if(d&&Array.isArray(d.lessons))return d;}
+  }catch(e){}
+  try{
+    var r2=await fetch("lessons.json?t="+Date.now(),{cache:"no-store"});
+    if(r2.ok){var d2=await r2.json();if(d2&&Array.isArray(d2.lessons))return d2;}
+  }catch(e){}
+  return null;
+}
+var lastCat="";
+async function loadCatalog(){
+  if(TEACHER)return;
+  var data=await fetchCatalog();
+  if(data){
+    var s=JSON.stringify(data);
+    try{localStorage.setItem(CKEY,s);}catch(e){}
+    if(s===lastCat)return;
+    lastCat=s;
+  }else{
+    if(lastCat)return;
+    try{data=JSON.parse(localStorage.getItem(CKEY)||"null");}catch(e){data=null;}
+    if(data)lastCat=JSON.stringify(data);
+  }
+  if(data&&Array.isArray(data.lessons))applyCatalog(data);
+}
+
+/* teacher: several photos at once, reviewed one after another */
+function handleFiles(list){
+  var arr=(list||[]).filter(Boolean);if(!arr.length)return;
+  ui.queue=arr.slice(1);ui.qTotal=arr.length;ui.qIdx=1;
+  handleFile(arr[0]);
+}
+function nextInQueue(){
+  var next=ui.queue.shift();ui.qIdx++;
+  var old=ui.draft;if(old&&old.imageUrl)URL.revokeObjectURL(old.imageUrl);
+  ui.draft=newDraft();window.scrollTo(0,0);
+  handleFile(next);
+}
+
+/* ---------- events ---------- */
+document.addEventListener("click",function(e){
+  var el=e.target.closest("[data-act]");
+  if(!el){
+    var wEl=e.target.closest(".w");
+    if(wEl&&ui.screen==="reader"){if(ui.edit){toggleHeart(wEl.getAttribute("data-w"));render();}else wordHelp(wEl.getAttribute("data-w"),wEl);}
+    return;
+  }
+  var act=el.getAttribute("data-act"),id=el.getAttribute("data-id");
+  switch(act){
+    case "new":startNew();break;
+    case "open":openStory(id);break;
+    case "edit":startEdit(id);break;
+    case "delete-ask":ui.confirmDel=id;render();break;
+    case "delete-no":ui.confirmDel=null;render();break;
+    case "delete-yes":state.stories=state.stories.filter(function(s){return s.id!==id;});ui.confirmDel=null;persist();render();break;
+    case "home":stopSpeech();clearTimeout(pageTimer);persist();ui.edit=false;go("library");break;
+    case "speak":speak();break;
+    case "prev":turn(-1);break;
+    case "next":turn(1);break;
+    case "toggle-edit":ui.edit=!ui.edit;render();break;
+    case "open-drawer":ui.drawer=true;renderDrawer();var i=document.getElementById("hw-input");if(i)i.focus();break;
+    case "close-drawer":ui.drawer=false;renderDrawer();break;
+    case "add-heart":hwAddFromForm();break;
+    case "say-hw":sayWord(el.getAttribute("data-w"));break;
+    case "hw-sel":var hk=norm(el.getAttribute("data-w"));ui.hwSel=ui.hwSel||{};if(ui.hwSel[hk])delete ui.hwSel[hk];else ui.hwSel[hk]=1;ui.hwDelAsk=false;renderDrawer();break;
+    case "hw-all":hwSelect("all");break;
+    case "hw-sel-off":hwSelect("off");break;
+    case "hw-none":hwSelect("none");break;
+    case "hw-show":hwEach(function(x){x.released=true;x.releaseOn="";});hwDone("Shown to students");break;
+    case "hw-hide":hwEach(function(x){x.released=false;x.releaseOn="";});hwDone("Hidden from students");break;
+    case "hw-sched":
+      if(dueDate(ui.hwSDate)==null){toast("Pick a date first");break;}
+      hwEach(function(x){x.released=false;x.releaseOn=ui.hwSDate;});hwDone("Scheduled for "+fmtDate(dueDate(ui.hwSDate)));break;
+    case "hw-del-ask":ui.hwDelAsk=true;renderDrawer();break;
+    case "hw-del-no":ui.hwDelAsk=false;renderDrawer();break;
+    case "hw-del-yes":var dsel=ui.hwSel||{};state.hw=state.hw.filter(function(x){return !dsel[norm(x.w)];});ui.hwSel={};ui.hwDelAsk=false;hwDone("Deleted");break;
+    case "rel-upto":relUpto();break;
+    case "load-starter":loadStarter();break;
+    case "choose":$file.value="";$file.multiple=TEACHER;$file.click();break;
+    case "cam-start":startCamera();break;
+    case "cam-snap":snapCamera();break;
+    case "cam-stop":stopCamera();ui.draft.cam=false;render();break;
+    case "manual":ui.draft.step="review";ui.draft.error="";render();break;
+    case "cancel-read":if(ctl)ctl.abort();ui.draft.step="capture";render();break;
+    case "save-draft":saveDraft();break;
+    case "cancel-draft":leaveImport();break;
+    case "ins":
+      var le=document.getElementById("d-lesson");
+      if(le){var a0=le.selectionStart==null?le.value.length:le.selectionStart,b0=le.selectionEnd==null?a0:le.selectionEnd;
+        le.value=le.value.slice(0,a0)+id+le.value.slice(b0);ui.draft.lesson=le.value;le.focus();le.setSelectionRange(a0+id.length,a0+id.length);}
+      break;
+    case "progress":stopSpeech();persist();ui.edit=false;ui.confirmClear=false;go("progress");break;
+    case "pv":ui.pv=id;keepScroll();break;
+    case "pm":ui.pm=id;keepScroll();break;
+    case "clear-ask":ui.confirmClear=true;keepScroll();break;
+    case "clear-no":ui.confirmClear=false;keepScroll();break;
+    case "clear-yes":state.log=[];ui.confirmClear=false;persist();keepScroll();break;
+    case "say-word":sayWord(ui.helpWord);break;
+    case "spell-word":spellWord(ui.helpWord);break;
+    case "close-help":closeHelp();break;
+    case "export-public":exportPublic();break;
+    case "export-backup":exportBackup();break;
+    case "load-json":$json.value="";$json.click();break;
+    case "exit-teacher":try{localStorage.removeItem(TKEY);}catch(x){}setKey("");location.href=location.pathname;break;
+    case "signin":doSignin();break;
+    case "signin-retry":ui.signin={busy:true};render();initTeacher();break;
+    case "skip-draft":if(ui.queue&&ui.queue.length)nextInQueue();else leaveImport();break;
+  }
+});
+function refreshAfterWords(){
+  renderDrawer();
+  if(ui.screen==="reader"||ui.screen==="library"){
+    var keep=document.getElementById("hw-input");
+    $app.innerHTML=ui.screen==="reader"?viewReader():viewLibrary();
+  }
+  var i=document.getElementById("hw-input");if(i)i.focus();
+}
+document.addEventListener("change",function(e){
+  var t=e.target;
+  if(t.getAttribute&&t.hasAttribute("data-rel")){setRel(t.getAttribute("data-rel"),{released:t.checked});return;}
+  if(t.getAttribute&&t.hasAttribute("data-reldate")){setRel(t.getAttribute("data-reldate"),{releaseOn:t.value});return;}
+  if(t.id==="hw-mode"){ui.hwMode=t.value;renderDrawer();return;}
+  if(t.id==="hw-date"){ui.hwDate=t.value;return;}
+  if(t.id==="hw-sdate"){ui.hwSDate=t.value;return;}
+  if(t.id==="voiceSel"){state.voice=t.value;persist();var wasV=speaking;stopSpeech();if(wasV)speak();else updateSpeakBtn();}
+  else if(t.id==="speedSel"){state.speed=parseFloat(t.value);persist();var wasS=speaking;stopSpeech();if(wasS)speak();else updateSpeakBtn();}
+});
+$file.addEventListener("change",function(){if($file.files&&$file.files.length)handleFiles([].slice.call($file.files,0,TEACHER?60:1));});
+document.addEventListener("input",function(e){
+  var t=e.target;
+  if(!ui.draft)return;
+  if(t.id==="d-title")ui.draft.title=t.value;
+  else if(t.id==="d-lesson")ui.draft.lesson=t.value;
+  else if(t.id==="d-pat")ui.draft.patternsText=t.value;
+  else if(t.id==="d-pages"){
+    ui.draft.pagesText=t.value;
+    var n=t.value.split("\n").filter(function(l){return l.trim();}).length;
+    var c=document.getElementById("d-count");if(c)c.textContent=n+(n===1?" page":" pages");
+  }
+});
+document.addEventListener("keydown",function(e){
+  var tag=(e.target.tagName||"").toLowerCase();
+  if(e.key==="Enter"&&e.target.id==="pw"){e.preventDefault();doSignin();return;}
+  if(e.key==="Enter"&&e.target.id==="hw-input"){e.preventDefault();hwAddFromForm();return;}
+  if(e.key==="Escape"&&ui.drawer){ui.drawer=false;renderDrawer();return;}
+  if(tag==="input"||tag==="textarea")return;
+  if(ui.screen==="reader"&&!ui.drawer){
+    if(e.key==="ArrowRight"||e.key==="PageDown"||e.key===" "){e.preventDefault();turn(1);}
+    else if(e.key==="ArrowLeft"||e.key==="PageUp"){e.preventDefault();turn(-1);}
+    else if(e.key==="r"||e.key==="R"){speak();}
+  }
+});
+document.addEventListener("dragover",function(e){var z=e.target.closest&&e.target.closest("#drop");if(z){e.preventDefault();z.classList.add("over");}});
+document.addEventListener("dragleave",function(e){var z=e.target.closest&&e.target.closest("#drop");if(z)z.classList.remove("over");});
+document.addEventListener("drop",function(e){
+  var z=e.target.closest&&e.target.closest("#drop");
+  if(z){e.preventDefault();z.classList.remove("over");handleFiles([].slice.call(e.dataTransfer.files||[],0,TEACHER?60:1));}
+});
+document.addEventListener("paste",function(e){
+  if(ui.screen!=="import"||!ui.draft||ui.draft.step!=="capture")return;
+  var items=(e.clipboardData&&e.clipboardData.items)||[];
+  for(var i=0;i<items.length;i++){
+    if(items[i].type&&items[i].type.indexOf("image/")===0){var f=items[i].getAsFile();if(f){e.preventDefault();handleFile(f);return;}}
+  }
+});
+if(canSpeak){try{window.speechSynthesis.onvoiceschanged=function(){if(ui.screen==="reader"&&!speaking){var el=document.querySelector(".voicebar");if(el)el.outerHTML=voiceBar();}};}catch(e){}}
+window.addEventListener("pagehide",function(){clearTimeout(pageTimer);saveLocal();});
+
+window.addEventListener("beforeunload",function(e){if(TEACHER&&sync.mode==="connected"&&(sync.pending||sync.busy)){e.preventDefault();e.returnValue="";}});
+setInterval(function(){if(!TEACHER&&!document.hidden)loadCatalog();},60000);
+document.addEventListener("visibilitychange",function(){if(!TEACHER&&!document.hidden)loadCatalog();});
+render();
+initDb();
+loadCatalog();
+initTeacher();
+})();
+</script>
+</body>
+</html>

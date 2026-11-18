@@ -1,0 +1,1152 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Page by Page</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Andika:wght@400;700&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+  --desk:#17454D; --desk-deep:#0F343B; --on-desk:#F2F7F8; --on-desk-soft:#B9D0D4; --desk-line:rgba(255,255,255,.22);
+  --surface:#FFFFFF; --surface-ink:#1C2733; --surface-soft:#EEF3F6; --line:#D3DCE3; --muted:#56656F;
+  --heart-ui:#B4194F; --lesson-ui:#1B5FAA;
+  --paper:#FFFFFF; --page-ink:#1C2733; --paper-edge:#D7DFE6;
+  --heart:#B4194F; --lesson:#1B5FAA; --hl:#FFE066;
+  --accent:#FFB703; --accent-ink:#2A1E00;
+  --read:"Andika","Atkinson Hyperlegible","Segoe UI",system-ui,sans-serif;
+  --ui:"Atkinson Hyperlegible","Segoe UI",system-ui,sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --desk:#0C2328; --desk-deep:#071418; --on-desk:#E9F2F4; --on-desk-soft:#9DB8BD;
+    --surface:#15262D; --surface-ink:#E8F0F2; --surface-soft:#1D323A; --line:#2D4650; --muted:#9DB2B9;
+    --heart-ui:#FF8FB1; --lesson-ui:#8EC1FF;
+  }
+}
+:root[data-theme="dark"]{
+  --desk:#0C2328; --desk-deep:#071418; --on-desk:#E9F2F4; --on-desk-soft:#9DB8BD;
+  --surface:#15262D; --surface-ink:#E8F0F2; --surface-soft:#1D323A; --line:#2D4650; --muted:#9DB2B9;
+  --heart-ui:#FF8FB1; --lesson-ui:#8EC1FF;
+}
+html{scroll-padding-top:env(safe-area-inset-top,0px);height:100%;background:var(--desk)}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;height:100%;background:var(--desk);color:var(--on-desk);font-family:var(--ui);font-size:18px;line-height:1.4}
+#app{min-height:100%;display:flex;flex-direction:column}
+button,input,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+
+/* buttons */
+.btn{display:inline-flex;align-items:center;gap:.5em;border:2px solid transparent;border-radius:12px;padding:.6em 1.1em;font-weight:700;background:transparent;line-height:1.1;white-space:nowrap}
+.btn.primary{background:var(--accent);color:var(--accent-ink)}
+.btn.primary:hover{filter:brightness(1.06)}
+.btn.ghost{border-color:var(--desk-line);color:var(--on-desk)}
+.btn.ghost:hover{background:rgba(255,255,255,.08)}
+.btn.ghost[aria-pressed="true"]{background:var(--on-desk);color:var(--desk-deep);border-color:var(--on-desk)}
+.btn.line{border-color:var(--line);color:var(--surface-ink);background:var(--surface)}
+.btn.line:hover{background:var(--surface-soft)}
+.btn.danger{border-color:#B3261E;color:#fff;background:#B3261E}
+.btn[disabled]{opacity:.5;cursor:not-allowed}
+
+/* top bar */
+.bar{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:16px;padding:16px 28px;border-bottom:1px solid var(--desk-line)}
+.bar .left{justify-self:start;display:flex;gap:10px}
+.bar .right{justify-self:end;display:flex;gap:10px}
+.bar h1{margin:0;font-family:var(--read);font-size:1.7rem;font-weight:700;text-align:center;letter-spacing:.01em}
+.brand{font-family:var(--read);font-weight:700;font-size:1.5rem}
+
+/* library */
+.lib{padding:40px 48px 60px;max-width:1300px;width:100%;margin:0 auto}
+.lib h2{font-family:var(--read);font-size:2.2rem;margin:0 0 6px}
+.lib p.sub{margin:0 0 30px;color:var(--on-desk-soft);max-width:60ch}
+.shelf{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:34px 28px}
+.cover{display:flex;flex-direction:column;justify-content:space-between;width:100%;aspect-ratio:3/4;text-align:left;border:0;border-radius:6px 14px 14px 6px;padding:22px 20px 18px 30px;color:#fff;background:linear-gradient(90deg,rgba(0,0,0,.28) 0 14px,rgba(255,255,255,.12) 14px 16px,transparent 16px),var(--c);box-shadow:0 14px 26px rgba(0,0,0,.35);transition:transform .15s}
+.cover:hover{transform:translateY(-4px)}
+.cv-lesson{font-size:.95rem;opacity:.92}
+.cv-title{font-family:var(--read);font-weight:700;font-size:1.65rem;line-height:1.2}
+.cv-meta{font-size:.95rem;opacity:.92}
+.cover-actions{display:flex;gap:8px;margin-top:12px;align-items:center;min-height:40px}
+.link{background:none;border:0;padding:.3em .1em;color:var(--on-desk-soft);text-decoration:underline;text-underline-offset:3px}
+.link:hover{color:var(--on-desk)}
+.confirm{display:flex;gap:8px;align-items:center;font-size:.95rem}
+.empty{border:2px dashed var(--desk-line);border-radius:18px;padding:48px;text-align:center;max-width:640px}
+.empty h3{font-family:var(--read);font-size:1.6rem;margin:0 0 8px}
+
+/* reader */
+.stage{flex:1;display:grid;grid-template-columns:auto minmax(0,1080px) auto;justify-content:center;align-items:center;gap:22px;padding:26px 32px 12px}
+.turn{width:76px;height:76px;border-radius:50%;border:2px solid var(--desk-line);background:rgba(255,255,255,.06);color:var(--on-desk);font-size:2rem;display:grid;place-items:center}
+.turn:hover:not([disabled]){background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.turn[disabled]{opacity:.28;cursor:default}
+.leaf{position:relative;min-height:min(64vh,580px);display:flex;flex-direction:column;padding:26px 60px 18px 72px;color:var(--page-ink);border-radius:6px 18px 18px 6px;
+  background:linear-gradient(90deg,rgba(0,0,0,.16),rgba(0,0,0,0) 34px),var(--paper);
+  box-shadow:1px 1px 0 var(--paper-edge),3px 3px 0 var(--paper),4px 4px 0 var(--paper-edge),6px 6px 0 var(--paper),7px 7px 0 var(--paper-edge),0 26px 44px rgba(0,0,0,.4)}
+.leaf-top{display:flex;flex-wrap:wrap;align-items:center;gap:10px 16px}
+.lesson-label{font-size:1.05rem;font-weight:700;color:#3C4B58}
+.chip{display:inline-flex;align-items:center;gap:.4em;border:1.5px solid #C9D3DB;border-radius:999px;padding:.15em .75em;font-size:.95rem;color:#3C4B58;background:#fff}
+.chip .h{color:var(--heart)}
+.chip mark{background:var(--hl);color:var(--lesson);font-weight:700;border-radius:4px;padding:0 .2em}
+.sentence{flex:1;display:flex;align-items:center;padding:14px 0 20px}
+.sentence-inner{font-family:var(--read);font-size:clamp(2.6rem,4.3vw,4.9rem);line-height:1.6;word-spacing:.1em;letter-spacing:.01em;text-wrap:pretty;max-width:22ch}
+.sentence-inner.wide{max-width:none}
+.anim-next{animation:inR .22s ease-out}
+.anim-prev{animation:inL .22s ease-out}
+@keyframes inR{from{opacity:0;transform:translateX(26px)}to{opacity:1;transform:none}}
+@keyframes inL{from{opacity:0;transform:translateX(-26px)}to{opacity:1;transform:none}}
+.w.heart{color:var(--heart);font-weight:700;position:relative;white-space:nowrap}
+.w.heart::after{content:"\2665";position:absolute;left:50%;transform:translateX(-50%);bottom:-.5em;font-size:.34em;line-height:1}
+.w.lesson{color:var(--lesson);font-weight:700}
+.w.lesson mark{background:var(--hl);color:inherit;border-radius:.14em;padding:0 .05em}
+.editing .w{cursor:pointer;border-radius:10px}
+.editing .w:hover{outline:3px dashed var(--lesson);outline-offset:3px}
+.leaf-foot{display:flex;justify-content:space-between;align-items:center;color:#6A7884;font-size:1rem}
+.theend{font-family:var(--read);font-weight:700;color:var(--lesson)}
+.speak{display:inline-flex;align-items:center;gap:.5em;border:0;border-radius:12px;padding:.65em 1.2em;font-weight:700;font-size:1.1rem;background:var(--lesson);color:#fff}
+.speak:hover{filter:brightness(1.12)}
+.voicebar{display:flex;gap:20px;flex-wrap:wrap;justify-content:center;font-size:.95rem;margin-top:4px}
+.voicebar label{display:inline-flex;align-items:center;gap:8px}
+.voicebar select{background:var(--desk-deep);color:var(--on-desk);border:1px solid var(--desk-line);border-radius:8px;padding:.3em .5em;max-width:260px}
+.speak[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink)}
+.progress{display:flex;flex-direction:column;align-items:center;gap:8px;padding:6px 0 26px;color:var(--on-desk-soft)}
+.track{width:min(520px,60vw);height:8px;border-radius:99px;background:rgba(255,255,255,.18);overflow:hidden}
+.track i{display:block;height:100%;background:var(--accent);border-radius:99px;transition:width .25s}
+.banner{margin:14px auto 0;max-width:760px;text-align:center;background:var(--accent);color:var(--accent-ink);border-radius:12px;padding:.55em 1em;font-weight:700}
+
+/* word reading + help */
+.w{cursor:pointer;border-radius:.14em;transition:background .08s}
+.leaf:not(.editing) .w:hover{background:#EEF3F6}
+.w.picked{background:#E6DBFF;box-shadow:inset 0 -.12em 0 #6B3FD1}
+.w.speaking,.leaf:not(.editing) .w.speaking:hover{background:#BDF0C8;box-shadow:inset 0 -.14em 0 #1E8E3E}
+.sentence.all{align-items:flex-start}
+.all-title{font-family:var(--read);font-weight:700;font-size:1.15rem;color:var(--lesson)}
+.story-all{font-family:var(--read);font-size:clamp(1.7rem,2.7vw,2.7rem);line-height:2;word-spacing:.1em;max-height:min(54vh,520px);overflow:auto;padding:6px 10px 6px 0;width:100%}
+.sline{-webkit-box-decoration-break:clone;box-decoration-break:clone;border-radius:.2em;padding:.05em 0;transition:background .2s}
+.sline.cur{background:rgba(27,95,170,.1)}
+.speak.sm{font-size:1rem;padding:.5em 1em}
+.speak.alt{background:#fff;color:var(--lesson);border:2px solid var(--lesson)}
+.helpcard{display:flex;align-items:center;gap:14px 18px;flex-wrap:wrap;margin:0 0 12px;padding:12px 16px;border:2px solid #C9D3DB;border-radius:16px;background:#F5F8FA}
+.hw-big{font-family:var(--read);font-size:2.6rem;font-weight:700;line-height:1.15;border-radius:.14em;padding:0 .12em}
+.hw-big.heart{color:var(--heart)}.hw-big.lesson{color:var(--lesson)}
+.hw-big.say{background:#BDF0C8;box-shadow:inset 0 -.12em 0 #1E8E3E}
+.hw-big .L.on{background:#BDF0C8;box-shadow:inset 0 -.12em 0 #1E8E3E;border-radius:.12em}
+.helpcard .tip{flex:1;min-width:200px;color:#3C4B58;font-size:1.05rem}
+.helpcard .tip mark{background:var(--hl);color:var(--lesson);font-weight:700;border-radius:4px;padding:0 .2em}
+
+/* progress */
+.chars{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-top:-6px}
+.chars span{color:var(--muted);font-size:.95rem;margin-right:2px}
+.chars .btn{padding:.3em .7em;font-family:var(--read);font-size:1.1rem}
+.pg{padding:30px 48px 60px;max-width:1200px;width:100%;margin:0 auto;display:flex;flex-direction:column;gap:22px}
+.pg h2{font-family:var(--read);font-size:2.1rem;margin:0}
+.pg .sub{margin:4px 0 0;color:var(--on-desk-soft);max-width:70ch}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px}
+.stat{background:var(--surface);color:var(--surface-ink);border-radius:16px;padding:18px 20px;box-shadow:0 10px 24px rgba(0,0,0,.25)}
+.stat b{display:block;font-family:var(--read);font-size:2.4rem;line-height:1.1}
+.stat span{color:var(--muted);font-size:.95rem}
+.card{background:var(--surface);color:var(--surface-ink);border-radius:18px;padding:24px 26px;box-shadow:0 14px 30px rgba(0,0,0,.28)}
+.card h3{margin:0 0 4px;font-family:var(--read);font-size:1.4rem}
+.card .hint{margin:0 0 14px;color:var(--muted);font-size:.95rem}
+.card-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px 20px;flex-wrap:wrap;margin-bottom:6px}
+.ctl{display:flex;gap:10px;flex-wrap:wrap}
+.seg{display:inline-flex;border:2px solid var(--line);border-radius:12px;overflow:hidden}
+.seg button{border:0;background:var(--surface);color:var(--surface-ink);padding:.45em .95em;font-weight:700}
+.seg button+button{border-left:2px solid var(--line)}
+.seg button[aria-pressed="true"]{background:var(--lesson-ui);color:var(--surface)}
+.chart{display:flex;align-items:flex-end;gap:10px;height:200px;border-bottom:2px solid var(--line)}
+.col{flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;min-width:0}
+.col .v{font-weight:700;font-size:.95rem;margin-bottom:4px}
+.col .b{width:100%;max-width:64px;border-radius:8px 8px 0 0;background:var(--lesson-ui);min-height:3px}
+.col.now .b{background:var(--accent)}
+.xl{display:flex;gap:10px}
+.xl div{flex:1;min-width:0;text-align:center;font-size:.85rem;color:var(--muted);padding-top:6px}
+.dots{display:flex;gap:12px;flex-wrap:wrap}
+.dot{width:52px;text-align:center;font-size:.85rem;color:var(--muted)}
+.dot i{display:grid;place-items:center;width:44px;height:44px;margin:0 auto 4px;border-radius:50%;border:2px solid var(--line);font-style:normal;font-weight:700;color:var(--surface-ink)}
+.dot.on i{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.dot.today i{outline:3px solid var(--lesson-ui);outline-offset:2px}
+.pgrid{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.pc{width:58px;border-radius:10px;border:2px solid var(--line);text-align:center;padding:4px 0 5px;font-size:.8rem;color:var(--muted)}
+.pc b{display:block;font-size:1.2rem;font-family:var(--read);color:var(--surface-ink)}
+.pc.l1,.pc.l2,.pc.l3,.pc.l4{color:#5A4300;border-color:transparent}
+.pc.l1 b,.pc.l2 b,.pc.l3 b,.pc.l4 b{color:#2A1E00}
+.pc.l1{background:#FFF1BF}.pc.l2{background:#FFD966}.pc.l3{background:#FFB703}.pc.l4{background:#F28E00}
+.hw em{font-style:normal;background:var(--heart-ui);color:var(--surface);border-radius:999px;padding:0 .55em;font-size:.85rem;margin-right:.3em}
+.hw.plain{border-color:var(--lesson-ui);color:var(--lesson-ui)}
+.hw.plain em{background:var(--lesson-ui)}
+.wordlist{display:flex;flex-wrap:wrap;gap:8px}
+
+
+/* drawer */
+.scrim{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:20}
+.drawer{position:fixed;top:0;right:0;bottom:0;width:min(440px,92vw);z-index:21;background:var(--surface);color:var(--surface-ink);padding:calc(24px + env(safe-area-inset-top,0px)) 26px calc(24px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;gap:14px;box-shadow:-12px 0 40px rgba(0,0,0,.35)}
+.drawer h2{margin:0;font-family:var(--read);font-size:1.6rem}
+.drawer .hint{margin:0;color:var(--muted);font-size:.95rem}
+.add-row{display:flex;gap:8px}
+.field{flex:1;min-width:0;border:2px solid var(--line);border-radius:12px;padding:.6em .8em;background:var(--surface);color:var(--surface-ink)}
+.field:focus-visible{outline-offset:1px}
+.words{display:flex;flex-wrap:wrap;gap:8px;overflow:auto;padding:4px 2px 8px;align-content:flex-start}
+.hw{display:inline-flex;align-items:center;gap:6px;border:1.5px solid var(--heart-ui);color:var(--heart-ui);border-radius:999px;padding:.2em .4em .2em .85em;font-family:var(--read);font-weight:700;font-size:1.05rem}
+.hw button{border:0;background:transparent;color:inherit;border-radius:50%;width:26px;height:26px;line-height:1;font-size:1.1rem;display:grid;place-items:center}
+.hw button:hover{background:var(--heart-ui);color:var(--surface)}
+.drawer-head{display:flex;justify-content:space-between;align-items:center}
+
+/* import */
+.panel{background:var(--surface);color:var(--surface-ink);border-radius:18px;padding:30px;box-shadow:0 18px 40px rgba(0,0,0,.3)}
+.wrap{padding:34px 48px 60px;max-width:1200px;width:100%;margin:0 auto}
+.wrap h2{font-family:var(--read);font-size:2rem;margin:0 0 6px}
+.wrap .sub{margin:0 0 24px;color:var(--on-desk-soft)}
+.drop{border:3px dashed var(--line);border-radius:18px;padding:54px 24px;text-align:center;background:var(--surface-soft)}
+.drop.over{border-color:var(--accent);background:var(--surface)}
+.drop h3{font-family:var(--read);font-size:1.5rem;margin:0 0 6px}
+.drop p{margin:0 0 20px;color:var(--muted)}
+.row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.cam{margin-top:20px;text-align:center}
+.cam video{max-width:100%;max-height:48vh;border-radius:12px;background:#000}
+.note{margin-top:16px;padding:.7em 1em;border-radius:10px;background:var(--surface-soft);color:var(--surface-ink);border-left:5px solid var(--accent)}
+.alt{margin-top:18px;text-align:center}
+.alt .link{color:var(--lesson-ui)}
+.reading{display:grid;place-items:center;gap:16px;padding:60px 20px;text-align:center}
+.spin{width:54px;height:54px;border-radius:50%;border:6px solid var(--line);border-top-color:var(--accent);animation:spin 1s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.review{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:30px}
+.review img{width:100%;border-radius:12px;border:1px solid var(--line);display:block}
+.form{display:flex;flex-direction:column;gap:14px}
+.form label{display:flex;flex-direction:column;gap:6px;font-weight:700}
+.form label small{font-weight:400;color:var(--muted)}
+.form textarea.field{min-height:300px;font-family:var(--read);font-size:1.15rem;line-height:1.55;resize:vertical}
+.err{color:#B3261E;font-weight:700}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .err{color:#FF9A92}}
+:root[data-theme="dark"] .err{color:#FF9A92}
+.toast{position:fixed;left:50%;bottom:calc(28px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--on-desk);color:var(--desk-deep);border-radius:999px;padding:.6em 1.2em;font-weight:700;z-index:40;box-shadow:0 8px 24px rgba(0,0,0,.35)}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+
+@media (max-width:900px){
+  .stage{grid-template-columns:1fr;padding:16px}
+  .turn{display:none}
+  .leaf{padding:22px 24px 16px 36px}
+  .review{grid-template-columns:1fr}
+  .bar{grid-template-columns:1fr;justify-items:center;padding:12px 16px}
+  .bar .left,.bar .right{justify-self:center}
+  .lib,.wrap,.pg{padding-left:20px;padding-right:20px}
+}
+@media (prefers-reduced-motion:reduce){
+  .anim-next,.anim-prev{animation:none}.cover{transition:none}.spin{animation-duration:2.5s}
+}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<div id="drawer"></div>
+<div id="toast" aria-live="polite"></div>
+<input type="file" id="file" accept="image/jpeg,image/png,image/webp,image/gif,.jpg,.jpeg,.png,.webp,.gif" hidden>
+
+<script>
+(function(){
+"use strict";
+
+var STARTER_HEART=["the","I","and","a","is","as","said","top","do","of","see","be","me","he","from","look","book","are","was","you","what","go","so","no","goes","says","she","we","they","their","we\u2019re","talk","walk","could","would","should","or","for","where","by","my","one","once","two"];
+var STARTER_STORY={
+  id:"stink-in-the-bank",
+  title:"Stink in the Bank",
+  lesson:"Lesson 52: n /\u014B/ (as in nk)",
+  patterns:["nk"],
+  pages:[
+    "Hank has a job at the bank.",
+    "When Hank gets to the bank, he sniffs a bad smell.",
+    "\u201CWhat is that smell?\u201D Hank thinks.",
+    "\u201CIs it a skunk?\u201D",
+    "He sniffs his desk.",
+    "\u201CNo, it\u2019s not my desk.\u201D",
+    "He checks the fish tank.",
+    "\u201CNo, this is not what stinks.\u201D",
+    "He walks to the back of the bank.",
+    "When he gets to the back, he sees the small trash bin.",
+    "\u201COh no!\u201D Hank yells, \u201CI left all the trash in the bin.\u201D",
+    "Hank sniffs the trash.",
+    "\u201CYuck!\u201D he yells, \u201Cthat\u2019s what stinks!\u201D",
+    "Hank brings the trash to the big bin and slams the lid shut.",
+    "Hank is glad he got rid of the stink."
+  ],
+  createdAt:0,lastPage:0
+};
+var COVERS=["#3D5A98","#7B4B94","#C27C00","#3A7D44","#B83E5A","#4A5A6A"];
+var KEY="pagebypage.v1";
+
+var state=loadLocal();
+var firstRun=false;
+if(!state){ state={v:1,touched:false,heartWords:STARTER_HEART.slice(),stories:[clone(STARTER_STORY)]}; firstRun=true; saveLocal(); }
+normState();
+var ui={screen:"library",storyId:null,page:0,edit:false,drawer:false,draft:null,confirmDel:null,dir:"",photoOk:null,pv:"week",pm:"pages",helpWord:null,run:null,confirmClear:false};
+var speaking=false, speakId=0, canSpeak=("speechSynthesis" in window)&&typeof SpeechSynthesisUtterance!=="undefined";
+var dbDoc=null, dbSaving=false, dbDirty=false, pageTimer=null, toastTimer=null, ctl=null, camStream=null;
+
+var $app=document.getElementById("app");
+var $drawer=document.getElementById("drawer");
+var $toast=document.getElementById("toast");
+var $file=document.getElementById("file");
+
+/* ---------- helpers ---------- */
+function clone(o){return JSON.parse(JSON.stringify(o));}
+function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];});}
+function norm(w){return String(w).toLowerCase().replace(/[\u2018\u2019`]/g,"'").trim();}
+function uid(){return "s"+Date.now().toString(36)+Math.random().toString(36).slice(2,6);}
+function hash(s){var h=0;for(var i=0;i<s.length;i++){h=(h*31+s.charCodeAt(i))|0;}return Math.abs(h);}
+function getStory(id){return state.stories.filter(function(s){return s.id===id;})[0]||null;}
+function heartSet(){var o={};state.heartWords.forEach(function(w){o[norm(w)]=1;});return o;}
+async function useCap(n){try{return window.claude?await window.claude.use(n):null;}catch(e){return null;}}
+
+/* ---------- storage ---------- */
+function loadLocal(){try{var r=localStorage.getItem(KEY);return r?JSON.parse(r):null;}catch(e){return null;}}
+function saveLocal(){try{localStorage.setItem(KEY,JSON.stringify(state));}catch(e){}}
+function persist(){state.touched=true;saveLocal();dbDirty=true;if(dbDoc)flushDb();}
+function persistSoon(){clearTimeout(pageTimer);pageTimer=setTimeout(persist,900);}
+async function flushDb(){
+  if(dbSaving)return;dbSaving=true;
+  try{while(dbDirty){dbDirty=false;await dbDoc.set(clone(state));}}catch(e){console.error("save failed",e);}
+  dbSaving=false;
+}
+function logKey(e){return e.t+"|"+e.k+"|"+e.s+"|"+(e.p==null?"":e.p)+"|"+(e.w||"");}
+function normState(){
+  if(!Array.isArray(state.log))state.log=[];
+  if(!state.speedV){state.speedV=2;if(!state.speed||state.speed>=0.85)state.speed=0.65;}
+}
+function mergeRemote(remote){
+  if(!state.touched){state=remote;normState();return;}
+  var seen={};state.heartWords.forEach(function(w){seen[norm(w)]=1;});
+  (remote.heartWords||[]).forEach(function(w){if(!seen[norm(w)]){state.heartWords.push(w);seen[norm(w)]=1;}});
+  var ids={};state.stories.forEach(function(s){ids[s.id]=1;});
+  (remote.stories||[]).forEach(function(s){if(!ids[s.id])state.stories.push(s);});
+  var ks={};state.log.forEach(function(e){ks[logKey(e)]=1;});
+  (remote.log||[]).forEach(function(e){var k=logKey(e);if(!ks[k]){state.log.push(e);ks[k]=1;}});
+  state.log.sort(function(a,b){return a.t-b.t;});
+}
+async function initDb(){
+  var user=await useCap("user"),db=await useCap("db");
+  if(!user||!db)return;
+  var id=await user.id();if(!id)return;
+  var ref=db.doc("data/users/"+id+"/reader");
+  var snap;
+  try{snap=await Promise.race([ref.get(),new Promise(function(_,rej){setTimeout(function(){rej(new Error("timeout"));},10000);})]);}
+  catch(e){return;}
+  var data=snap.exists?snap.data():null;
+  if(data&&Array.isArray(data.stories)&&Array.isArray(data.heartWords)){
+    mergeRemote(data);saveLocal();
+    if(ui.screen==="library"||ui.screen==="reader")render();
+    dbDoc=ref;
+    if(state.touched){dbDirty=true;flushDb();}
+  }else{
+    dbDoc=ref;dbDirty=true;flushDb();
+  }
+}
+
+/* ---------- text processing ---------- */
+var TAG=/^(?:[A-Z][a-z]+|he|she|I|they|we)\s+(?:said|says|asks?|asked|yells?|yelled|thinks?|thought|shouts?|shouted|replies|replied|cries|cried|whispers?|whispered|calls?|called)\b/i;
+function splitSentences(text){
+  var t=String(text).replace(/\s+/g," ").trim();if(!t)return [];
+  var segs=t.match(/.+?[.!?]+[\u201D"]?(?=\s|$)|.+$/g)||[];
+  var out=[];
+  segs.forEach(function(raw){
+    var s=raw.trim();if(!s)return;
+    var prev=out[out.length-1];
+    if(prev&&/[?!,][\u201D"]$/.test(prev)&&!/^[\u201C"]/.test(s)&&TAG.test(s)){out[out.length-1]=prev+" "+s;}
+    else out.push(s);
+  });
+  return out;
+}
+function normPat(x){
+  x=String(x||"").toLowerCase().replace(/\s+/g,"");
+  if(/^[a-z][\-\u2013\u2014][a-z]$/.test(x))x=x.replace(/[\-\u2013\u2014]/,"_");
+  return x.replace(/[^a-z_]/g,"");
+}
+function derivePatterns(lesson){
+  var t=String(lesson||""),out=[];
+  var after=/lesson\s*[:.#-]?\s*\d+[a-z]?\s*[:.\-]?\s*(.*)$/i.exec(t);
+  var preToks=after?after[1].replace(/\([^)]*\)/g,"").replace(/\/[^\/]*\//g,",").split(/\s*(?:,|\band\b|\bor\b)\s*/i).map(normPat).filter(Boolean):[];
+  var split=preToks.filter(function(x){return /^[a-z]+_[a-z]+$/.test(x);});
+  if(split.length)return split;
+  var m=/\(\s*as\s+in\s+([^)]+)\)/i.exec(t)||/as\s+in\s+([A-Za-z][A-Za-z,\s]*?)\s*[)\]]?\s*$/i.exec(t);
+  if(m)return m[1].split(/[\s,]+/).map(normPat).filter(function(x){return x&&x!=="and";});
+  return preToks.filter(function(x){return /^[a-z]{2,}$/.test(x);});
+}
+function parsePatterns(txt){return String(txt||"").split(/[\s,]+/).map(normPat).filter(Boolean);}
+
+/* Where a lesson pattern sits inside a word. "nk" matches every "nk"; "a_e" matches a, one consonant, then e
+   (cave, maze, snakes) and marks only the a and the e. Returns [[start,end],...] or null. */
+function patRanges(low,pat){
+  var out=[],i;
+  if(pat.indexOf("_")<0){
+    var at;i=0;
+    while((at=low.indexOf(pat,i))>-1){out.push([at,at+pat.length]);i=at+pat.length;}
+    return out.length?out:null;
+  }
+  var parts=pat.split("_");
+  var m=new RegExp(parts.join("[b-df-hj-np-tv-z]")+"(?=(?:s|d)?$)").exec(low);
+  if(!m)return null;
+  var off=m.index;
+  parts.forEach(function(pt,k){out.push([off,off+pt.length]);off+=pt.length+1;});
+  return out;
+}
+function renderSentence(text,story,sx){
+  var hs=heartSet();
+  sx=sx||0;
+  var pats=(story.patterns||[]).map(function(p){return p.toLowerCase();}).filter(Boolean);
+  var re=/([A-Za-z]+(?:[\u2019'][A-Za-z]+)*)|([^A-Za-z]+)/g,m,out="";
+  while((m=re.exec(text))){
+    if(m[2]){out+=esc(m[2]);continue;}
+    var word=m[1],low=word.toLowerCase(),n=norm(word);
+    var attr=' data-w="'+esc(word)+'" data-sx="'+sx+'" data-en="'+(m.index+m[0].length)+'"';
+    if(hs[n]){out+='<span class="w heart"'+attr+'>'+esc(word)+'</span>';continue;}
+    var rg=null;
+    for(var pi=0;pi<pats.length&&!rg;pi++)rg=patRanges(low,pats[pi]);
+    if(rg){
+      var html="",i=0;
+      rg.forEach(function(r){html+=esc(word.slice(i,r[0]))+"<mark>"+esc(word.slice(r[0],r[1]))+"</mark>";i=r[1];});
+      html+=esc(word.slice(i));
+      out+='<span class="w lesson"'+attr+'>'+html+'</span>';
+    }else out+='<span class="w"'+attr+'>'+esc(word)+'</span>';
+  }
+  return out;
+}
+
+/* ---------- views ---------- */
+function render(){
+  if(ui.screen==="reader"){var s=getStory(ui.storyId);if(!s){ui.screen="library";}}
+  if(ui.screen==="library")$app.innerHTML=viewLibrary();
+  else if(ui.screen==="reader")$app.innerHTML=viewReader();
+  else if(ui.screen==="import")$app.innerHTML=viewImport();
+  else if(ui.screen==="progress")$app.innerHTML=viewProgress();
+  renderDrawer();
+}
+function keepScroll(){var y=window.scrollY;render();window.scrollTo(0,y);}
+
+function lessonNum(st){
+  var m=/lesson\s*[:.#-]?\s*(\d+)/i.exec(st.lesson||"");
+  return m?parseInt(m[1],10):-1;
+}
+function sortedStories(){
+  return state.stories.slice().sort(function(a,b){
+    var d=lessonNum(b)-lessonNum(a);
+    return d||((b.createdAt||0)-(a.createdAt||0));
+  });
+}
+function viewLibrary(){
+  var per=storyStats();
+  var cards=sortedStories().map(function(s){
+    var c=COVERS[hash(s.id)%COVERS.length];
+    var o=per[s.id];
+    var meta=s.pages.length+" pages"+((s.lastPage>0&&s.lastPage<s.pages.length)?" \u2022 on page "+(s.lastPage+1):"")+((o&&o.fin)?" \u2022 finished "+o.fin+"\u00D7":"");
+    var acts=ui.confirmDel===s.id
+      ?'<div class="confirm"><span>Delete this story?</span><button class="btn danger" data-act="delete-yes" data-id="'+s.id+'">Delete</button><button class="btn ghost" data-act="delete-no">Keep</button></div>'
+      :'<button class="link" data-act="edit" data-id="'+s.id+'">Edit text</button><button class="link" data-act="delete-ask" data-id="'+s.id+'">Delete</button>';
+    return '<article><button class="cover" style="--c:'+c+'" data-act="open" data-id="'+s.id+'" aria-label="Read '+esc(s.title)+'">'
+      +'<span class="cv-lesson">'+esc(s.lesson||"")+'</span><span class="cv-title">'+esc(s.title)+'</span><span class="cv-meta">'+esc(meta)+'</span></button>'
+      +'<div class="cover-actions">'+acts+'</div></article>';
+  }).join("");
+  var body=state.stories.length
+    ?'<div class="shelf">'+cards+'</div>'
+    :'<div class="empty"><h3>No stories yet</h3><p>Take a picture of a passage from school and it becomes a book you can read one sentence at a time.</p><button class="btn primary" data-act="new">Add a story from a photo</button></div>';
+  return '<header class="bar"><div class="left"><span class="brand">Page by Page</span></div><div></div><div class="right">'
+    +'<button class="btn ghost" data-act="progress">\uD83D\uDCC8 Progress</button>'
+    +'<button class="btn ghost" data-act="open-drawer">\u2665 Heart words ('+state.heartWords.length+')</button>'
+    +'<button class="btn primary" data-act="new">+ New story from a photo</button></div></header>'
+    +'<main class="lib"><h2>My stories</h2><p class="sub">Pick a book to read. Each sentence gets its own page.</p>'+body+'</main>';
+}
+
+function speakLabel(){
+  if(speaking)return "\u25A0 Stop";
+  var s=getStory(ui.storyId);
+  return (s&&ui.page>=s.pages.length)?"\uD83D\uDD0A Read the whole story":"\uD83D\uDD0A Read aloud";
+}
+function viewReader(){
+  var s=getStory(ui.storyId);
+  var n=s.pages.length;
+  if(ui.page>n)ui.page=n;if(ui.page<0)ui.page=0;
+  var isSum=ui.page===n;
+  var pct=Math.round(ui.page/n*100);
+  var pats=(s.patterns||[]).filter(Boolean);
+  var lessonChip=pats.length?'<span class="chip"><mark>'+esc(pats.join(", "))+'</mark> words</span>':"";
+  var label=isSum?"The whole story":"Page "+(ui.page+1)+" of "+n;
+  var body;
+  if(isSum){
+    body='<div class="sentence all"><div class="story-all '+ui.dir+'" id="storyAll">'
+      +s.pages.map(function(t,i){return '<span class="sline" data-sl="'+i+'">'+renderSentence(t,s,i)+'</span> ';}).join("")
+      +'</div></div>';
+  }else{
+    body='<div class="sentence"><div class="sentence-inner '+ui.dir+'" id="sent">'+renderSentence(s.pages[ui.page]||"",s,ui.page)+'</div></div>';
+  }
+  return '<header class="bar"><div class="left"><button class="btn ghost" data-act="home">\u2190 My stories</button></div>'
+    +'<h1>'+esc(s.title)+'</h1>'
+    +'<div class="right"><button class="btn ghost" data-act="toggle-edit" aria-pressed="'+ui.edit+'">Mark heart words</button>'
+    +'<button class="btn ghost" data-act="progress">\uD83D\uDCC8 Progress</button>'
+    +'<button class="btn ghost" data-act="open-drawer">\u2665 Heart words ('+state.heartWords.length+')</button></div></header>'
+    +(ui.edit?'<div class="banner">Tap any word to add it to the heart words, or tap a heart word to remove it.</div>':"")
+    +'<main class="stage">'
+    +'<button class="turn" data-act="prev" aria-label="Previous page" '+(ui.page===0?"disabled":"")+'>\u2039</button>'
+    +'<section class="leaf'+(ui.edit?" editing":"")+'" aria-label="'+label+'">'
+    +'<div class="leaf-top"><span class="lesson-label">'+esc(s.lesson||"")+'</span>'+lessonChip+'<span class="chip"><span class="h">\u2665</span> heart words</span>'+(isSum?'<span class="all-title">The whole story</span>':'')+'</div>'
+    +body
+    +'<div id="helpCard" role="status" aria-live="polite"></div>'
+    +'<div class="leaf-foot"><span>'+(isSum?"\u2605":ui.page+1)+'</span>'+(canSpeak?'<button class="speak" id="speakBtn" data-act="speak" aria-pressed="'+speaking+'">'+speakLabel()+'</button>':'<span></span>')+(isSum?'<span class="theend">The End</span>':'<span style="min-width:60px"></span>')+'</div>'
+    +'</section>'
+    +'<button class="turn" data-act="next" aria-label="Next page" '+(isSum?"disabled":"")+'>\u203A</button>'
+    +'</main>'
+    +'<div class="progress"><div class="track"><i style="width:'+pct+'%"></i></div><span>'+label+'</span>'+(canSpeak?voiceBar():"")+'</div>';
+}
+
+/* ---------- progress tracking ---------- */
+var MON=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+function dkey(t){var d=new Date(t);return d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate();}
+function mondayOf(t){var d=new Date(t);d.setHours(0,0,0,0);d.setDate(d.getDate()-((d.getDay()+6)%7));return d;}
+function fmtDate(t){var d=new Date(t);return MON[d.getMonth()]+" "+d.getDate();}
+function logEv(k,x){
+  var e={t:Date.now(),k:k,s:ui.storyId};
+  if(x){for(var q in x)e[q]=x[q];}
+  state.log.push(e);
+  if(state.log.length>20000)state.log.splice(0,state.log.length-20000);
+  persistSoon();
+}
+function buckets(mode){
+  var out=[],i,st,en;
+  if(mode==="month"){
+    var now=new Date();
+    for(i=5;i>=0;i--){
+      st=new Date(now.getFullYear(),now.getMonth()-i,1);en=new Date(now.getFullYear(),now.getMonth()-i+1,1);
+      out.push({st:+st,en:+en,label:MON[st.getMonth()]+((st.getMonth()===0||i===5)?" \u2019"+String(st.getFullYear()).slice(2):""),pages:0,fin:0,dayset:{},cur:i===0});
+    }
+  }else{
+    var m=mondayOf(Date.now());
+    for(i=7;i>=0;i--){
+      st=new Date(m);st.setDate(st.getDate()-7*i);en=new Date(st);en.setDate(en.getDate()+7);
+      out.push({st:+st,en:+en,label:fmtDate(st),pages:0,fin:0,dayset:{},cur:i===0});
+    }
+  }
+  state.log.forEach(function(e){
+    if(e.k!=="p"&&e.k!=="f")return;
+    for(var j=0;j<out.length;j++){
+      var b=out[j];
+      if(e.t>=b.st&&e.t<b.en){if(e.k==="p")b.pages++;else b.fin++;b.dayset[dkey(e.t)]=1;break;}
+    }
+  });
+  out.forEach(function(b){b.days=Object.keys(b.dayset).length;});
+  return out;
+}
+function storyStats(){
+  var per={};
+  state.log.forEach(function(e){
+    if(!e.s)return;
+    var o=per[e.s]||(per[e.s]={pages:{},fin:0,total:0,last:0,aloud:0});
+    if(e.k==="p"){o.pages[e.p]=(o.pages[e.p]||0)+1;o.total++;}
+    else if(e.k==="f")o.fin++;
+    else if(e.k==="a")o.aloud++;
+    if((e.k==="p"||e.k==="f")&&e.t>o.last)o.last=e.t;
+  });
+  return per;
+}
+function streakInfo(){
+  var set={};
+  state.log.forEach(function(e){if(e.k==="p"||e.k==="f"){var k=dkey(e.t);set[k]=(set[k]||0)+1;}});
+  var today=new Date();today.setHours(0,0,0,0);
+  var c=new Date(today),n=0;
+  if(!set[dkey(+c)])c.setDate(c.getDate()-1);
+  while(set[dkey(+c)]){n++;c.setDate(c.getDate()-1);}
+  var days=[],m=mondayOf(Date.now()),names=["M","T","W","T","F","S","S"];
+  for(var i=0;i<7;i++){
+    var x=new Date(m);x.setDate(x.getDate()+i);
+    days.push({name:names[i],n:set[dkey(+x)]||0,today:dkey(+x)===dkey(+today)});
+  }
+  return {streak:n,days:days};
+}
+function statCard(n,label){return '<div class="stat"><b>'+n+'</b><span>'+label+'</span></div>';}
+function viewProgress(){
+  var per=storyStats(),wk=buckets("week"),cw=wk[wk.length-1],si=streakInfo();
+  var totalFin=0;state.log.forEach(function(e){if(e.k==="f")totalFin++;});
+  var head='<header class="bar"><div class="left"><button class="btn ghost" data-act="home">\u2190 My stories</button></div><h1>Progress</h1><div></div></header>';
+  var stats='<div class="stats">'
+    +statCard(cw.pages,cw.pages===1?"page finished this week":"pages finished this week")
+    +statCard(cw.fin,cw.fin===1?"story finished this week":"stories finished this week")
+    +statCard(si.streak,si.streak===1?"day in a row":"days in a row")
+    +statCard(totalFin,totalFin===1?"story finished in all":"stories finished in all")
+    +'</div>';
+  var dots='<div class="card"><h3>This week</h3><p class="hint">The number is how many pages were finished that day.</p><div class="dots">'
+    +si.days.map(function(d){return '<div class="dot'+(d.n?" on":"")+(d.today?" today":"")+'"><i>'+(d.n||"")+'</i>'+d.name+'</div>';}).join("")+'</div></div>';
+  var bs=buckets(ui.pv),key=ui.pm==="fin"?"fin":ui.pm==="days"?"days":"pages";
+  var mx=Math.max.apply(null,bs.map(function(b){return b[key];}).concat([1]));
+  var sum=bs.reduce(function(a,b){return a+b[key];},0);
+  var cols=bs.map(function(b){return '<div class="col'+(b.cur?" now":"")+'"><span class="v">'+b[key]+'</span><div class="b" style="height:'+Math.round(b[key]/mx*150)+'px"></div></div>';}).join("");
+  var xl=bs.map(function(b){return '<div>'+esc(b.label)+(b.cur?'<br><b>now</b>':'')+'</div>';}).join("");
+  var mname={pages:"Pages finished",fin:"Stories finished",days:"Days practiced"}[key];
+  function seg(attr,cur,items){return '<div class="seg" role="group">'+items.map(function(x){return '<button data-act="'+attr+'" data-id="'+x[0]+'" aria-pressed="'+(cur===x[0])+'">'+x[1]+'</button>';}).join("")+'</div>';}
+  var chart='<div class="card"><div class="card-head"><div><h3>'+mname+(ui.pv==="month"?", month by month":", week by week")+'</h3><p class="hint" style="margin:0">'
+    +(ui.pv==="month"?"Last 6 months":"Last 8 weeks, each starting on a Monday")+" \u2022 "+sum+" in total"+'</p></div>'
+    +'<div class="ctl">'+seg("pv",ui.pv,[["week","Weeks"],["month","Months"]])+seg("pm",key,[["pages","Pages"],["fin","Stories"],["days","Days"]])+'</div></div>'
+    +'<div class="chart" role="img" aria-label="'+esc(mname)+' chart">'+cols+'</div><div class="xl">'+xl+'</div>'
+    +(sum===0?'<p class="hint" style="margin:12px 0 0">Nothing here yet. Finish a page and it shows up in this chart.</p>':'')+'</div>';
+  var cards=sortedStories().map(function(s){
+    var o=per[s.id]||{pages:{},fin:0,total:0,last:0,aloud:0};
+    var chips=s.pages.map(function(t,i){
+      var c=o.pages[i]||0,lv=c===0?0:c===1?1:c===2?2:c<5?3:4;
+      return '<div class="pc l'+lv+'" title="'+esc(t)+'"><b>'+c+'</b><span>p'+(i+1)+'</span></div>';
+    }).join("");
+    return '<div class="card"><h3>'+esc(s.title)+'</h3><p class="hint" style="margin:0">'+esc(s.lesson||"")+'</p>'
+      +'<p style="margin:10px 0 0"><b>Finished '+o.fin+(o.fin===1?" time":" times")+'</b> \u2022 '+o.total+(o.total===1?" page":" pages")+' completed in all'
+      +(o.aloud?' \u2022 whole story read aloud '+o.aloud+(o.aloud===1?" time":" times"):"")+' \u2022 '+(o.last?"last read "+fmtDate(o.last):"not read yet")+'</p>'
+      +'<div class="pgrid">'+chips+'</div>'
+      +'<p class="hint" style="margin:10px 0 0">Each box is one page. The number is how many times it was finished. Darker means more practice. Hold or hover a box to see the sentence.</p></div>';
+  }).join("");
+  var hc={};state.log.forEach(function(e){if(e.k==="h"&&e.w)hc[e.w]=(hc[e.w]||0)+1;});
+  var top=Object.keys(hc).sort(function(a,b){return hc[b]-hc[a]||(a<b?-1:1);}).slice(0,18),hs=heartSet();
+  var helped='<div class="card"><h3>Words that needed help</h3><p class="hint">Words tapped for help while reading. Pink words are heart words.</p>'
+    +(top.length?'<div class="wordlist">'+top.map(function(w){return '<span class="hw'+(hs[w]?"":" plain")+'">'+esc(w)+'<em>'+hc[w]+'</em></span>';}).join("")+'</div>':'<p class="hint" style="margin:0">None yet. Tap any word while reading to hear it.</p>')+'</div>';
+  var clr=ui.confirmClear
+    ?'<div class="confirm"><span>Clear all progress history? Stories and heart words stay.</span><button class="btn danger" data-act="clear-yes">Clear</button><button class="btn ghost" data-act="clear-no">Keep</button></div>'
+    :'<button class="link" data-act="clear-ask">Clear progress history</button>';
+  return head+'<main class="pg"><div><h2>Practice over time</h2><p class="sub">A page counts when you tap the next arrow after it. A story counts as finished when you reach the whole-story page.</p></div>'
+    +stats+dots+chart+(state.stories.length?'<h2 style="font-size:1.5rem">Page by page</h2>'+cards:'')+helped+'<div>'+clr+'</div></main>';
+}
+
+
+function viewImport(){
+  var d=ui.draft;
+  var head='<header class="bar"><div class="left"><button class="btn ghost" data-act="cancel-draft">\u2190 Cancel</button></div><h1>'+(d.id?"Edit story":"New story")+'</h1><div></div></header>';
+  if(d.step==="reading"){
+    return head+'<main class="wrap"><div class="panel reading" role="status"><div class="spin"></div><h2>Reading the page\u2026</h2><p class="sub" style="color:var(--muted)">This takes a few seconds.</p><button class="btn line" data-act="cancel-read">Stop</button></div></main>';
+  }
+  if(d.step==="capture"){
+    var noPhoto=ui.photoOk===false;
+    var drop=noPhoto
+      ?'<div class="note">Reading photos isn\u2019t available in this view, so type or paste the passage instead.</div>'
+      :'<div class="drop" id="drop"><h3>Upload a photo of the passage</h3><p>Drag a JPEG or other image file here, paste one with Ctrl+V, or pick it from your computer.</p>'
+        +'<div class="row"><button class="btn primary" data-act="choose">Upload a JPEG or image</button><button class="btn line" data-act="cam-start">Use the webcam</button></div>'
+        +(d.cam?'<div class="cam"><video id="cam" autoplay playsinline muted></video><div class="row" style="margin-top:12px"><button class="btn primary" data-act="cam-snap">Take picture</button><button class="btn line" data-act="cam-stop">Close camera</button></div></div>':"")
+        +'</div>';
+    return head+'<main class="wrap"><div class="panel"><h2 style="color:var(--surface-ink)">Make a book from a photo</h2><p style="margin:0 0 20px;color:var(--muted)">Lay the sheet flat with good light so every word is sharp.</p>'+(ui.engine==="local"?'<div class="note" style="margin:0 0 18px">This copy reads photos with a built-in text reader. It needs an internet connection and can make small mistakes, so check the text on the next screen.</div>':"")
+      +drop
+      +(d.error?'<p class="err" role="alert">'+esc(d.error)+'</p>':"")
+      +'<div class="alt"><button class="link" data-act="manual">Type or paste the passage instead</button></div></div></main>';
+  }
+  // review
+  var lines=d.pagesText.split("\n").filter(function(l){return l.trim();}).length;
+  return head+'<main class="wrap"><div class="panel"><div class="review">'
+    +'<div>'+(d.imageUrl?'<img src="'+esc(d.imageUrl)+'" alt="Photo of the passage">':'<div class="note">No photo for this story.</div>')+'</div>'
+    +'<div class="form">'
+    +'<h2 style="color:var(--surface-ink);margin:0">Check the story</h2>'
+    +'<p style="margin:0;color:var(--muted)">Fix anything that was read wrong. Each line becomes one page.</p>'
+    +'<label>Story name<input class="field" id="d-title" value="'+esc(d.title)+'"></label>'
+    +'<label>Lesson (shows at the top left of each page)<input class="field" id="d-lesson" value="'+esc(d.lesson)+'"></label>'
+    +'<div class="chars"><span>Insert:</span>'+["\u0101","\u0113","\u012B","\u014D","\u016B","\u014B","_"].map(function(c){return '<button type="button" class="btn line" data-act="ins" data-id="'+c+'" aria-label="Insert '+c+'">'+c+'</button>';}).join("")+'</div>'
+    +'<label>Lesson sound letters <small>Words with these letters get highlighted. Separate with commas, like nk or ng, ck. Use an underscore for patterns like a_e.</small><input class="field" id="d-pat" value="'+esc(d.patternsText)+'"></label>'
+    +'<label>Story, one sentence per line<textarea class="field" id="d-pages" spellcheck="false">'+esc(d.pagesText)+'</textarea></label>'
+    +'<div id="d-count" style="color:var(--muted)">'+lines+' pages</div>'
+    +(d.error?'<p class="err" role="alert">'+esc(d.error)+'</p>':"")
+    +'<div class="row" style="justify-content:flex-start"><button class="btn primary" data-act="save-draft">Save story</button><button class="btn line" data-act="cancel-draft">Cancel</button></div>'
+    +'</div></div></div></main>';
+}
+
+function renderDrawer(){
+  if(!ui.drawer){$drawer.innerHTML="";return;}
+  var words=state.heartWords.slice().sort(function(a,b){return norm(a)<norm(b)?-1:1;});
+  $drawer.innerHTML='<div class="scrim" data-act="close-drawer"></div>'
+    +'<aside class="drawer" role="dialog" aria-modal="true" aria-label="Heart words">'
+    +'<div class="drawer-head"><h2>\u2665 Heart words</h2><button class="btn line" data-act="close-drawer">Done</button></div>'
+    +'<p class="hint">These words get a red heart in every story. Add new ones as they come up in school. You can also turn on \u201CMark heart words\u201D while reading and tap words in the story.</p>'
+    +'<div class="add-row"><input class="field" id="hw-input" placeholder="Add a heart word" autocomplete="off" autocapitalize="off" spellcheck="false"><button class="btn primary" data-act="add-heart">Add</button></div>'
+    +'<div class="words">'+words.map(function(w){return '<span class="hw">'+esc(w)+'<button data-act="remove-heart" data-w="'+esc(w)+'" aria-label="Remove '+esc(w)+'">\u00D7</button></span>';}).join("")+'</div>'
+    +'<div class="hint">'+state.heartWords.length+' words</div></aside>';
+}
+
+function toast(msg){
+  $toast.innerHTML='<div class="toast">'+esc(msg)+'</div>';
+  clearTimeout(toastTimer);toastTimer=setTimeout(function(){$toast.innerHTML="";},2200);
+}
+
+/* ---------- actions ---------- */
+function go(screen){ui.screen=screen;ui.dir="";render();window.scrollTo(0,0);}
+function openStory(id){
+  var s=getStory(id);if(!s)return;
+  ui.storyId=id;
+  var lp=s.lastPage||0;
+  ui.page=(lp>0&&lp<s.pages.length)?lp:0;
+  ui.edit=false;ui.dir="";ui.helpWord=null;
+  ui.run={sid:id,done:{},finished:false};
+  go("reader");
+}
+function turn(delta){
+  var s=getStory(ui.storyId);if(!s)return;
+  var n=s.pages.length;
+  var np=ui.page+delta;if(np<0||np>n)return;
+  if(delta>0&&ui.page<n&&ui.run&&!ui.run.done[ui.page]){ui.run.done[ui.page]=1;logEv("p",{p:ui.page});}
+  if(np===n&&ui.run&&!ui.run.finished){ui.run.finished=true;logEv("f");toast("You made it to the end! \u2605");}
+  stopSpeech();ui.helpWord=null;ui.page=np;ui.dir=delta>0?"anim-next":"anim-prev";s.lastPage=np;persistSoon();render();
+}
+function voiceList(){try{return window.speechSynthesis.getVoices().filter(function(v){return /^en/i.test(v.lang);});}catch(e){return [];}}
+function voiceBar(){
+  var vs=voiceList(),cur=pickVoice(),sp=state.speed||0.65;
+  var opts=vs.length?vs.map(function(v){return '<option value="'+esc(v.name)+'"'+(cur&&cur.name===v.name?" selected":"")+'>'+esc(v.name.replace(/^Microsoft\s+/,"").replace(/\s*-\s*English.*$/,""))+'</option>';}).join(""):'<option>Default voice</option>';
+  var speeds=[[0.5,"Very slow"],[0.65,"Slow"],[0.8,"Medium"],[1,"Normal"]],best=0;
+  speeds.forEach(function(x,i){if(Math.abs(x[0]-sp)<Math.abs(speeds[best][0]-sp))best=i;});
+  var so=speeds.map(function(x,i){return '<option value="'+x[0]+'"'+(i===best?" selected":"")+'>'+x[1]+'</option>';}).join("");
+  return '<div class="voicebar"><label>Voice <select id="voiceSel">'+opts+'</select></label><label>Speed <select id="speedSel">'+so+'</select></label></div>';
+}
+var LETTER={a:"ay",b:"bee",c:"see",d:"dee",e:"ee",f:"eff",g:"jee",h:"aitch",i:"eye",j:"jay",k:"kay",l:"ell",m:"em",n:"en",o:"oh",p:"pee",q:"cue",r:"are",s:"ess",t:"tee",u:"you",v:"vee",w:"double you",x:"ex",y:"why",z:"zee"};
+function rate(){return state.speed||0.65;}
+function mkUtter(text,r){var u=new SpeechSynthesisUtterance(text);u.lang="en-US";u.rate=r||rate();u.pitch=1.1;var v=pickVoice();if(v)u.voice=v;return u;}
+function rmClass(sel,cls){var a=document.querySelectorAll(sel);for(var i=0;i<a.length;i++)a[i].classList.remove(cls);}
+function clearWords(){rmClass(".w.speaking","speaking");}
+function clearHl(){clearWords();rmClass(".sline.cur","cur");rmClass("#hbig .L.on","on");rmClass("#hbig.say","say");}
+function hlWord(words,idx){clearWords();if(idx>=0&&words[idx])words[idx].classList.add("speaking");}
+function curSentence(i){
+  rmClass(".sline.cur","cur");
+  var sl=document.querySelector('.sline[data-sl="'+i+'"]');if(!sl)return;
+  sl.classList.add("cur");
+  var box=document.getElementById("storyAll");
+  if(box){
+    var r=sl.getBoundingClientRect(),b=box.getBoundingClientRect();
+    if(r.bottom>b.bottom-8||r.top<b.top+8){try{box.scrollTo({top:box.scrollTop+(r.top-b.top)-24,behavior:"smooth"});}catch(e){box.scrollTop=box.scrollTop+(r.top-b.top)-24;}}
+  }
+}
+function stopSpeech(){speakId++;speaking=false;try{if(canSpeak)window.speechSynthesis.cancel();}catch(e){}clearHl();}
+function updateSpeakBtn(){var b=document.getElementById("speakBtn");if(!b)return;b.setAttribute("aria-pressed",String(speaking));b.textContent=speakLabel();}
+
+/* Reads one sentence and highlights each word as it is spoken.
+   Uses the voice's word-boundary events when the browser provides them,
+   and falls back to timed highlighting when it does not. */
+function readSentence(text,sx,my,done){
+  var words=[].slice.call(document.querySelectorAll('.w[data-sx="'+sx+'"]'));
+  var u=mkUtter(text),gotB=false,fb=null,i=0;
+  function stepFb(){
+    if(my!==speakId||gotB)return;
+    hlWord(words,i);
+    if(i>=words.length)return;
+    var w=words[i],en=+w.getAttribute("data-en"),after=text.charAt(en)||"",after2=text.charAt(en+1)||"";
+    var ms=(w.textContent.length*70+90)/rate();
+    if(/[,;:]/.test(after))ms+=250/rate();
+    else if(/[.!?]/.test(after)||/[.!?]/.test(after2))ms+=350/rate();
+    i++;fb=setTimeout(stepFb,ms);
+  }
+  u.onstart=function(){if(my===speakId&&!gotB)stepFb();};
+  u.onboundary=function(e){
+    if(my!==speakId)return;
+    if(e.name&&e.name!=="word")return;
+    gotB=true;clearTimeout(fb);
+    var k=-1;
+    for(var j=0;j<words.length;j++){if(e.charIndex<+words[j].getAttribute("data-en")){k=j;break;}}
+    hlWord(words,k);
+  };
+  u.onend=function(){clearTimeout(fb);if(my===speakId)done(false);};
+  u.onerror=function(){clearTimeout(fb);if(my===speakId)done(true);};
+  window.speechSynthesis.speak(u);
+}
+function readStory(s,i,my){
+  if(my!==speakId)return;
+  if(i>=s.pages.length){speaking=false;clearHl();updateSpeakBtn();logEv("a");return;}
+  curSentence(i);
+  readSentence(s.pages[i],i,my,function(err){
+    if(my!==speakId)return;
+    clearWords();
+    if(err){speaking=false;clearHl();updateSpeakBtn();return;}
+    setTimeout(function(){readStory(s,i+1,my);},Math.round(650/rate()));
+  });
+}
+
+/* ---------- tap a word for help ---------- */
+function helpHtml(word){
+  var s=getStory(ui.storyId),n=norm(word),low=word.toLowerCase(),hs=heartSet(),cls="",tip;
+  var pats=((s&&s.patterns)||[]).filter(Boolean);
+  var hit=pats.filter(function(p){return patRanges(low,p);})[0];
+  if(hs[n]){cls=" heart";tip="\u2665 This is a heart word. Part of it doesn\u2019t sound the way it looks, so we learn it by heart.";}
+  else if(hit){cls=" lesson";tip="Look for the <mark>"+esc(hit)+"</mark> sound in this word. Say each part, then blend the sounds together.";}
+  else tip="Look at each letter, say its sound, then blend the sounds together.";
+  var letters=word.split("").map(function(ch){return /[A-Za-z]/.test(ch)?'<span class="L">'+esc(ch)+'</span>':esc(ch);}).join("");
+  return '<div class="helpcard"><span class="hw-big'+cls+'" id="hbig">'+letters+'</span><div class="tip">'+tip+'</div>'
+    +(canSpeak?'<button class="speak sm" data-act="say-word">\uD83D\uDD0A Hear it</button><button class="speak sm alt" data-act="spell-word">Spell it</button>':"")
+    +'<button class="speak sm alt" data-act="close-help" aria-label="Close word help">\u00D7</button></div>';
+}
+function wordHelp(word,el){
+  stopSpeech();updateSpeakBtn();
+  rmClass(".w.picked","picked");
+  el.classList.add("picked");
+  ui.helpWord=word;
+  logEv("h",{w:norm(word)});
+  var hc=document.getElementById("helpCard");if(hc)hc.innerHTML=helpHtml(word);
+  sayWord(word);
+}
+function closeHelp(){
+  stopSpeech();updateSpeakBtn();ui.helpWord=null;
+  rmClass(".w.picked","picked");
+  var hc=document.getElementById("helpCard");if(hc)hc.innerHTML="";
+}
+function sayWord(word){
+  if(!canSpeak||!word)return;
+  stopSpeech();updateSpeakBtn();
+  var my=speakId;
+  setTimeout(function(){
+    if(my!==speakId)return;
+    var big=document.getElementById("hbig");if(big)big.classList.add("say");
+    var u=mkUtter(word,Math.max(0.45,rate()*0.8));
+    u.onend=u.onerror=function(){if(big)big.classList.remove("say");};
+    window.speechSynthesis.speak(u);
+  },60);
+}
+function spellWord(word){
+  if(!canSpeak||!word)return;
+  stopSpeech();updateSpeakBtn();
+  var my=speakId;
+  var ls=[].slice.call(document.querySelectorAll("#hbig .L"));
+  var names=ls.map(function(el){return LETTER[el.textContent.toLowerCase()]||el.textContent;});
+  function step(i){
+    if(my!==speakId)return;
+    for(var k=0;k<ls.length;k++)ls[k].classList.remove("on");
+    var big=document.getElementById("hbig");
+    if(i>=ls.length){
+      if(big)big.classList.add("say");
+      var u2=mkUtter(word,Math.max(0.45,rate()*0.8));
+      u2.onend=u2.onerror=function(){if(big)big.classList.remove("say");};
+      window.speechSynthesis.speak(u2);
+      return;
+    }
+    ls[i].classList.add("on");
+    var u=mkUtter(names[i],0.8);
+    u.onend=u.onerror=function(){setTimeout(function(){step(i+1);},350);};
+    window.speechSynthesis.speak(u);
+  }
+  setTimeout(function(){step(0);},60);
+}
+function pickVoice(){
+  try{
+    var vs=window.speechSynthesis.getVoices().filter(function(v){return /^en/i.test(v.lang);});
+    var chosen=state.voice?vs.filter(function(v){return v.name===state.voice;})[0]:null;if(chosen)return chosen;
+    var rank=[/\bana\b/i,/jenny|aria|ava\b|samantha|kathy|junior/i,/natural|online|google us/i];
+    for(var r=0;r<rank.length;r++){var f=vs.filter(function(v){return rank[r].test(v.name);})[0];if(f)return f;}
+    var pref=null;
+    return pref||vs.filter(function(v){return /en[-_]US/i.test(v.lang);})[0]||vs[0]||null;
+  }catch(e){return null;}
+}
+function speak(){
+  if(!canSpeak){toast("Reading aloud isn\u2019t supported in this browser");return;}
+  var s=getStory(ui.storyId);if(!s)return;
+  if(speaking){stopSpeech();updateSpeakBtn();return;}
+  stopSpeech();
+  var my=speakId;
+  speaking=true;updateSpeakBtn();
+  setTimeout(function(){
+    if(my!==speakId)return;
+    if(ui.page<s.pages.length){
+      readSentence(s.pages[ui.page],ui.page,my,function(){speaking=false;clearHl();updateSpeakBtn();});
+    }else readStory(s,0,my);
+  },60);
+}
+function addHeart(raw){
+  var w=String(raw||"").trim().replace(/\s+/g," ");
+  if(!w)return false;
+  if(/\s/.test(w)){toast("Add one word at a time");return false;}
+  var n=norm(w);
+  if(state.heartWords.some(function(x){return norm(x)===n;})){toast("\u201C"+w+"\u201D is already a heart word");return false;}
+  state.heartWords.push(w==="I"||w==="i"?"I":w.toLowerCase());
+  persist();toast("Added \u201C"+w+"\u201D");return true;
+}
+function removeHeart(w){
+  var n=norm(w);state.heartWords=state.heartWords.filter(function(x){return norm(x)!==n;});persist();toast("Removed \u201C"+w+"\u201D");
+}
+function toggleHeart(w){
+  var n=norm(w);
+  if(state.heartWords.some(function(x){return norm(x)===n;}))removeHeart(w);else addHeart(w);
+}
+
+/* ---------- import flow ---------- */
+function newDraft(){return {id:null,step:"capture",title:"",lesson:"",patternsText:"",pagesText:"",imageUrl:"",error:"",cam:false};}
+function startNew(){ui.draft=newDraft();go("import");checkPhoto();}
+function startEdit(id){
+  var s=getStory(id);if(!s)return;
+  ui.draft={id:s.id,step:"review",title:s.title,lesson:s.lesson||"",patternsText:(s.patterns||[]).join(", "),pagesText:s.pages.join("\n"),imageUrl:"",error:"",cam:false};
+  go("import");
+}
+async function checkPhoto(){
+  var sample=await useCap("sample");
+  ui.engine="local";ui.photoOk=true;
+  if(sample){try{var lim=await sample.limits();if(lim&&lim.images)ui.engine="claude";}catch(e){}}
+  if(ui.screen==="import"&&ui.draft&&ui.draft.step==="capture")render();
+}
+function stopCamera(){if(camStream){camStream.getTracks().forEach(function(t){t.stop();});camStream=null;}}
+async function startCamera(){
+  var d=ui.draft;
+  try{
+    camStream=await navigator.mediaDevices.getUserMedia({video:{width:{ideal:1920},height:{ideal:1080}}});
+    d.cam=true;d.error="";render();
+    var v=document.getElementById("cam");if(v)v.srcObject=camStream;
+  }catch(e){stopCamera();d.cam=false;d.error="The camera isn\u2019t available here. Use \u201CUpload a JPEG or image\u201D instead.";render();}
+}
+function snapCamera(){
+  var v=document.getElementById("cam");if(!v||!v.videoWidth)return;
+  var c=document.createElement("canvas");c.width=v.videoWidth;c.height=v.videoHeight;c.getContext("2d").drawImage(v,0,0);
+  stopCamera();ui.draft.cam=false;
+  c.toBlob(function(b){if(b)processBlob(b);},"image/jpeg",0.9);
+}
+async function prepImage(file){
+  var bmp=null;
+  try{bmp=await createImageBitmap(file);}catch(e){}
+  if(!bmp){
+    bmp=await new Promise(function(res,rej){var im=new Image();im.onload=function(){res(im);};im.onerror=rej;im.src=URL.createObjectURL(file);});
+  }
+  var w=bmp.width||bmp.naturalWidth,h=bmp.height||bmp.naturalHeight;
+  var sc=Math.min(1,1800/Math.max(w,h));
+  var c=document.createElement("canvas");c.width=Math.round(w*sc);c.height=Math.round(h*sc);
+  c.getContext("2d").drawImage(bmp,0,0,c.width,c.height);
+  return await new Promise(function(res){c.toBlob(res,"image/jpeg",0.86);});
+}
+var PROMPT=[
+ "This is a photo of a children\u2019s phonics reading passage from school (UFLI Foundations style). Read the page and return ONLY JSON in exactly this shape:",
+ "{\"title\": \"...\", \"lesson\": \"...\", \"patterns\": [\"...\"], \"sentences\": [\"...\", \"...\"]}",
+ "Rules:",
+ "- title: the story title: the bold, centered heading between the lesson line and the \u201CIllustrate the story here\u201D box. Copy it exactly with its capital letters.",
+ "- lesson: the lesson label at the very top left of the page (it often has a highlighter mark), copied exactly, starting with the word Lesson and including the number, the sound in slashes, and the (as in ...) part, for example: Lesson 52: n /\u014B/ (as in nk). Keep special characters exactly as printed, such as the long-vowel marks in /\u0101/ /\u012B/ and the \u014B symbol. Do not include the logo text.",
+ "- patterns: the letter pattern or patterns the lesson teaches, lowercase, taken from the lesson label (for \u201Cas in nk\u201D return [\"nk\"]). Return [] if you can\u2019t tell.",
+ "- sentences: the story text in reading order, one sentence per item. Keep quoted speech together with its speaker tag in the same item (for example: \u201CWhat is that smell?\u201D Hank thinks.). Use the exact spelling and the curly quotation marks as printed. Do not fix or reword anything.",
+ "- Leave out the title, the \u201CIllustrate the story here\u201D box, logos, page numbers and the copyright line.",
+ "- Ignore yellow highlighter marks, circles and any handwriting."
+].join("\n");
+
+async function processBlob(blob){
+  var d=ui.draft;
+  d.error="";d.step="reading";
+  if(d.imageUrl)URL.revokeObjectURL(d.imageUrl);
+  d.imageUrl=URL.createObjectURL(blob);
+  render();
+  ctl=new AbortController();
+  var mine=ctl;
+  try{
+    var sample=await useCap("sample");
+    var data;if(!sample){data=await ocrLocal(blob,mine.signal);}
+    
+    else{data=await sample.json(PROMPT,{images:[blob],signal:mine.signal,modelTier:"default",cache:false});}
+    if(mine.signal.aborted)return;
+    var sentences=Array.isArray(data.sentences)?data.sentences.map(function(x){return String(x).trim();}).filter(Boolean):[];
+    if(!sentences.length&&data.text)sentences=splitSentences(data.text);
+    if(!sentences.length)throw {code:"empty"};
+    var lesson=fixSounds(String(data.lesson||"").trim());
+    var pats=Array.isArray(data.patterns)?data.patterns.map(function(p){return normPat(p);}).filter(Boolean):[];
+    if(!pats.length)pats=derivePatterns(lesson);
+    d.title=String(data.title||"").trim();d.lesson=lesson;d.patternsText=pats.join(", ");d.pagesText=sentences.join("\n");
+    d.step="review";d.error="";
+    render();
+  }catch(e){
+    if(mine.signal.aborted||(e&&e.code==="cancelled"))return;
+    var msg={
+      not_granted:"Claude wasn\u2019t allowed to read the photo. Choose the photo again and allow it, or type the passage in.",
+      rate_limited:"Too many requests at once. Wait a moment and try again.",
+      images_unavailable:"Reading photos isn\u2019t available here. Type or paste the passage instead.",
+      image_rejected:"That photo couldn\u2019t be used. Try a clearer, smaller photo (JPG or PNG).",
+      ocr_failed:"The built-in text reader couldn\u2019t start. It needs an internet connection the first time. Check your connection, or type the passage in.",
+      empty:"No story text was found in that photo. Try again with the whole page in view."
+    }[e&&e.code]||"The page couldn\u2019t be read. Try the photo again, or type the passage in.";
+    d.step="capture";d.error=msg;render();
+  }
+}
+function loadScript(src){return new Promise(function(res,rej){var s=document.createElement("script");s.src=src;s.onload=res;s.onerror=function(){rej(new Error("load"));};document.head.appendChild(s);});}
+function curly(t){return t.replace(/"([^"]*)"/g,"\u201C$1\u201D").replace(/(\w)'(\w)/g,"$1\u2019$2").replace(/\u201C\s+/g,"\u201C").replace(/\s+\u201D/g,"\u201D");}
+/* Finds the lesson label (top left) and the bold centered title in the header lines of a worksheet. */
+function cleanLesson(l){
+  var m=/lesson\s*[:.#-]?\s*\d+.*/i.exec(String(l||""));
+  var t=m?m[0]:String(l||"");
+  t=t.replace(/\s+(ufli|foundations)\b.*$/i,"").replace(/\s+/g," ").trim();
+  return t.replace(/^lesson\s*[:.#-]?\s*(\d+)/i,"Lesson $1").replace(/^(Lesson \d+[a-z]?)\s+(?=[^:\s])/,"$1: ").replace(/^(Lesson \d+[a-z]?)\s*[:.-]\s*/,"$1: ");
+}
+function cleanTitle(l){
+  return String(l||"").replace(/^[^A-Za-z0-9\u201C"']+/,"").replace(/[^A-Za-z0-9!?\u201D"']+$/,"").replace(/\s+/g," ").trim();
+}
+/* Photo readers often turn long-vowel marks into plain letters (/a/ instead of /ā/). For split patterns like a_e the
+   sound is known, so put the macron back. Also restores the ng sound symbol in "n /ŋ/ (as in nk)" lessons. */
+var MACRON={a:"\u0101",e:"\u0113",i:"\u012B",o:"\u014D",u:"\u016B"};
+function fixSounds(l){
+  var t=String(l||"");
+  try{t=t.normalize("NFC");}catch(e){}
+  t=t.replace(/\b([aeiou])_e(\s*)\/\s*([^\/]{1,3}?)\s*\//gi,function(m,v,sp,snd){
+    var base=snd;try{base=snd.normalize("NFD").replace(/[\u0300-\u036f]/g,"");}catch(e){}
+    if(base.toLowerCase()===v.toLowerCase())return v.toLowerCase()+"_e"+sp+"/"+MACRON[v.toLowerCase()]+"/";
+    return m;
+  });
+  t=t.replace(/(\bn\s*)\/\s*[yYnN\u03B7uj]\s*\/(\s*\(\s*as\s+in\s+n[gk])/i,"$1/\u014B/$2");
+  return t;
+}
+function parseHeader(lines){
+  var lesson="",title="",li=-1,i;
+  for(i=0;i<Math.min(lines.length,10);i++){
+    if(/lesson\s*[:.#-]?\s*\d+/i.test(lines[i])){lesson=cleanLesson(lines[i]);li=i;break;}
+  }
+  var cands=[];
+  for(i=li+1;i<lines.length;i++){
+    var l=lines[i];
+    if(/ufli|foundations|lesson\s*\d|\u00A9|copyright/i.test(l))continue;
+    var c=cleanTitle(l);
+    if(c.length<2||c.length>60||c.split(" ").length>9)continue;
+    cands.push(c);
+  }
+  title=cands.filter(function(c){return !/[.,]$/.test(c);})[0]||cands[0]||"";
+  return {lesson:fixSounds(lesson),title:title};
+}
+async function ocrLocal(blob,signal){
+  var text="";
+  try{
+    if(!window.Tesseract)await loadScript("https://cdnjs.cloudflare.com/ajax/libs/tesseract.js/5.1.1/tesseract.min.js");
+    var worker=await window.Tesseract.createWorker("eng");
+    try{var r=await worker.recognize(blob);text=(r.data&&r.data.text)||"";}finally{await worker.terminate();}
+  }catch(e){throw {code:"ocr_failed"};}
+  if(signal&&signal.aborted)throw {code:"cancelled"};
+  var lines=text.split(/\r?\n/).map(function(l){return l.trim();}).filter(Boolean);
+  var idx=-1;
+  lines.forEach(function(l,i){if(idx<0&&/[il1|]{1,3}lustrate|story\s+here/i.test(l))idx=i;});
+  var head=idx>=0?lines.slice(0,idx):lines.slice(0,6);
+  var rest=idx>=0?lines.slice(idx+1):lines.slice(6);
+  var hd=parseHeader(head);
+  var body=rest.filter(function(l){return !/ufli|\u00A9|copyright|university of florida/i.test(l);});
+  return {title:hd.title,lesson:hd.lesson,patterns:derivePatterns(hd.lesson),sentences:splitSentences(curly(body.join(" ")))};
+}
+async function handleFile(file){
+  if(!file)return;
+  var d=ui.draft;if(!d)return;
+  d.error="";
+  try{var blob=await prepImage(file);await processBlob(blob);}
+  catch(e){d.step="capture";d.error="That file couldn\u2019t be opened. Use a JPEG or PNG image (iPhone HEIC photos need to be saved as JPEG first).";render();}
+}
+function saveDraft(){
+  var d=ui.draft;
+  var title=document.getElementById("d-title").value.trim();
+  var lesson=document.getElementById("d-lesson").value.trim();
+  var pat=parsePatterns(document.getElementById("d-pat").value);
+  if(!pat.length)pat=derivePatterns(lesson);
+  var pages=document.getElementById("d-pages").value.split("\n").map(function(l){return l.trim();}).filter(Boolean);
+  if(pages.length===1&&pages[0].split(/[.!?]+[\u201D"]?\s/).length>1)pages=splitSentences(pages[0]);
+  if(!pages.length){d.title=title;d.lesson=lesson;d.patternsText=pat.join(", ");d.error="Add at least one sentence before saving.";render();return;}
+  if(!title)title="Untitled story";
+  if(d.id){
+    var s=getStory(d.id);s.title=title;s.lesson=lesson;s.patterns=pat;s.pages=pages;s.lastPage=Math.min(s.lastPage||0,pages.length-1);
+  }else{
+    state.stories.unshift({id:uid(),title:title,lesson:lesson,patterns:pat,pages:pages,createdAt:Date.now(),lastPage:0});
+  }
+  persist();
+  if(d.imageUrl)URL.revokeObjectURL(d.imageUrl);
+  ui.draft=null;stopCamera();
+  toast("Saved \u201C"+title+"\u201D");
+  go("library");
+}
+function leaveImport(){
+  if(ctl){ctl.abort();}
+  stopCamera();
+  if(ui.draft&&ui.draft.imageUrl)URL.revokeObjectURL(ui.draft.imageUrl);
+  ui.draft=null;go("library");
+}
+
+/* ---------- events ---------- */
+document.addEventListener("click",function(e){
+  var el=e.target.closest("[data-act]");
+  if(!el){
+    var wEl=e.target.closest(".w");
+    if(wEl&&ui.screen==="reader"){if(ui.edit){toggleHeart(wEl.getAttribute("data-w"));render();}else wordHelp(wEl.getAttribute("data-w"),wEl);}
+    return;
+  }
+  var act=el.getAttribute("data-act"),id=el.getAttribute("data-id");
+  switch(act){
+    case "new":startNew();break;
+    case "open":openStory(id);break;
+    case "edit":startEdit(id);break;
+    case "delete-ask":ui.confirmDel=id;render();break;
+    case "delete-no":ui.confirmDel=null;render();break;
+    case "delete-yes":state.stories=state.stories.filter(function(s){return s.id!==id;});ui.confirmDel=null;persist();render();break;
+    case "home":stopSpeech();clearTimeout(pageTimer);persist();ui.edit=false;go("library");break;
+    case "speak":speak();break;
+    case "prev":turn(-1);break;
+    case "next":turn(1);break;
+    case "toggle-edit":ui.edit=!ui.edit;render();break;
+    case "open-drawer":ui.drawer=true;renderDrawer();var i=document.getElementById("hw-input");if(i)i.focus();break;
+    case "close-drawer":ui.drawer=false;renderDrawer();break;
+    case "add-heart":
+      var inp=document.getElementById("hw-input");
+      if(addHeart(inp.value)){refreshAfterWords();var n=document.getElementById("hw-input");if(n)n.focus();}else inp.focus();
+      break;
+    case "remove-heart":removeHeart(el.getAttribute("data-w"));refreshAfterWords();break;
+    case "choose":$file.value="";$file.click();break;
+    case "cam-start":startCamera();break;
+    case "cam-snap":snapCamera();break;
+    case "cam-stop":stopCamera();ui.draft.cam=false;render();break;
+    case "manual":ui.draft.step="review";ui.draft.error="";render();break;
+    case "cancel-read":if(ctl)ctl.abort();ui.draft.step="capture";render();break;
+    case "save-draft":saveDraft();break;
+    case "cancel-draft":leaveImport();break;
+    case "ins":
+      var le=document.getElementById("d-lesson");
+      if(le){var a0=le.selectionStart==null?le.value.length:le.selectionStart,b0=le.selectionEnd==null?a0:le.selectionEnd;
+        le.value=le.value.slice(0,a0)+id+le.value.slice(b0);ui.draft.lesson=le.value;le.focus();le.setSelectionRange(a0+id.length,a0+id.length);}
+      break;
+    case "progress":stopSpeech();persist();ui.edit=false;ui.confirmClear=false;go("progress");break;
+    case "pv":ui.pv=id;keepScroll();break;
+    case "pm":ui.pm=id;keepScroll();break;
+    case "clear-ask":ui.confirmClear=true;keepScroll();break;
+    case "clear-no":ui.confirmClear=false;keepScroll();break;
+    case "clear-yes":state.log=[];ui.confirmClear=false;persist();keepScroll();break;
+    case "say-word":sayWord(ui.helpWord);break;
+    case "spell-word":spellWord(ui.helpWord);break;
+    case "close-help":closeHelp();break;
+  }
+});
+function refreshAfterWords(){
+  renderDrawer();
+  if(ui.screen==="reader"||ui.screen==="library"){
+    var keep=document.getElementById("hw-input");
+    $app.innerHTML=ui.screen==="reader"?viewReader():viewLibrary();
+  }
+  var i=document.getElementById("hw-input");if(i)i.focus();
+}
+document.addEventListener("change",function(e){
+  var t=e.target;
+  if(t.id==="voiceSel"){state.voice=t.value;persist();var wasV=speaking;stopSpeech();if(wasV)speak();else updateSpeakBtn();}
+  else if(t.id==="speedSel"){state.speed=parseFloat(t.value);persist();var wasS=speaking;stopSpeech();if(wasS)speak();else updateSpeakBtn();}
+});
+$file.addEventListener("change",function(){if($file.files&&$file.files[0])handleFile($file.files[0]);});
+document.addEventListener("input",function(e){
+  var t=e.target;
+  if(!ui.draft)return;
+  if(t.id==="d-title")ui.draft.title=t.value;
+  else if(t.id==="d-lesson")ui.draft.lesson=t.value;
+  else if(t.id==="d-pat")ui.draft.patternsText=t.value;
+  else if(t.id==="d-pages"){
+    ui.draft.pagesText=t.value;
+    var n=t.value.split("\n").filter(function(l){return l.trim();}).length;
+    var c=document.getElementById("d-count");if(c)c.textContent=n+(n===1?" page":" pages");
+  }
+});
+document.addEventListener("keydown",function(e){
+  var tag=(e.target.tagName||"").toLowerCase();
+  if(e.key==="Enter"&&e.target.id==="hw-input"){e.preventDefault();if(addHeart(e.target.value)){refreshAfterWords();}return;}
+  if(e.key==="Escape"&&ui.drawer){ui.drawer=false;renderDrawer();return;}
+  if(tag==="input"||tag==="textarea")return;
+  if(ui.screen==="reader"&&!ui.drawer){
+    if(e.key==="ArrowRight"||e.key==="PageDown"||e.key===" "){e.preventDefault();turn(1);}
+    else if(e.key==="ArrowLeft"||e.key==="PageUp"){e.preventDefault();turn(-1);}
+    else if(e.key==="r"||e.key==="R"){speak();}
+  }
+});
+document.addEventListener("dragover",function(e){var z=e.target.closest&&e.target.closest("#drop");if(z){e.preventDefault();z.classList.add("over");}});
+document.addEventListener("dragleave",function(e){var z=e.target.closest&&e.target.closest("#drop");if(z)z.classList.remove("over");});
+document.addEventListener("drop",function(e){
+  var z=e.target.closest&&e.target.closest("#drop");
+  if(z){e.preventDefault();z.classList.remove("over");var f=e.dataTransfer.files&&e.dataTransfer.files[0];if(f)handleFile(f);}
+});
+document.addEventListener("paste",function(e){
+  if(ui.screen!=="import"||!ui.draft||ui.draft.step!=="capture")return;
+  var items=(e.clipboardData&&e.clipboardData.items)||[];
+  for(var i=0;i<items.length;i++){
+    if(items[i].type&&items[i].type.indexOf("image/")===0){var f=items[i].getAsFile();if(f){e.preventDefault();handleFile(f);return;}}
+  }
+});
+if(canSpeak){try{window.speechSynthesis.onvoiceschanged=function(){if(ui.screen==="reader"&&!speaking){var el=document.querySelector(".voicebar");if(el)el.outerHTML=voiceBar();}};}catch(e){}}
+window.addEventListener("pagehide",function(){clearTimeout(pageTimer);saveLocal();});
+
+render();
+initDb();
+})();
+</script>
+</body>
+</html>

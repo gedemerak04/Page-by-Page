@@ -1,0 +1,19 @@
+PAGE BY PAGE: setup with central teacher control
+
+What is in this folder
+  public/index.html            the app
+  public/starter-lessons.json  the 130 starter lessons (teacher mode loads them)
+  netlify/functions/pbp.mjs    the small server piece that keeps the master copy
+  netlify.toml, package.json   tell Netlify where things are
+
+Steps
+  1. Put this folder in a new GitHub repository (GitHub web page: "Add file" > "Upload files").
+  2. Netlify: Add new project > Import an existing project > GitHub > pick the repository.
+     Leave the build command blank. The settings are read from netlify.toml.
+  3. Netlify: Project configuration > Environment variables > add
+        TEACHER_PASSCODE = (a passcode only you know)
+     then Deploys > Trigger deploy > Deploy project without cache.
+  4. Open  https://YOUR-SITE.netlify.app/?teacher  , sign in, click "Load starter lessons".
+  5. Students use the normal address (no ?teacher).
+
+Optional: PBP_TIMEZONE (default America/Chicago) decides which day a scheduled release counts as.
